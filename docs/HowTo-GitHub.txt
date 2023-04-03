@@ -1,0 +1,12 @@
+HowTo: Setup a GitHub-Account
+
+1. URL 
+   http://github.com
+   
+2. Setup Login
+a) email-address must match with the value of "user.email" from git-installation
+
+3. Setup a Repository
+a) Readme.md     # short description
+b) LICENSE       # select from the pull-down-menu
+c) .gitignore    # select the template for python

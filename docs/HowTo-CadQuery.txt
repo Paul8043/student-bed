@@ -1,0 +1,7 @@
+Installation: CadQuery & CQ-Editor
+
+1. URL
+   https://github.com/CadQuery
+	 
+2. Docu
+ 

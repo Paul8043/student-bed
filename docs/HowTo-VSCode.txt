@@ -1,0 +1,33 @@
+HowTo: Setup VS-Code
+
+1. URL 
+   https://code.visualstudio.com
+   
+2. Docs
+a) read https://code.visualstudio.com/docs  - Overview
+b) read https://code.visualstudio.com/docs  - SETUP
+c) read https://code.visualstudio.com/docs  - GET STARTED
+d) read https://code.visualstudio.com/docs  - USER GUIDE
+e) read https://code.visualstudio.com/docs  - SOURCE CONTROL
+f) read https://code.visualstudio.com/docs/sourcecontrol/overview#_vs-code-as-git-editor
+   do it later and only if really needed
+
+3. Installation
+a) download for Windows from https://code.visualstudio.com
+b) choose Windows x64 User Installer  
+c) double click on VSCodeUserSetup-x64-1.77.0.exe
+
+4. Customization
+a) The initial welcome-screen offers a plenty-list of possibilities. Flag only git-support,
+   nothing else, at least for the moment.
+
+5. Extensions
+a) Your language Pack
+b) Git Graph
+c) Python (by Microsoft)
+
+5. Notes
+a) The de-installer of VS-Code removes only code, but preserves any kind of settings.
+   If you have to re-do the installation, then perform first:
+   C:\Users\Paul\.vscode in your home-directory
+   C:\Users\Paul\AppData\Roaming\Code

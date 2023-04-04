@@ -5,6 +5,7 @@ Installation: Git
 	 
 2. Docu
    https://git-scm.com/doc
+   https://git-scm.com/book/en/v2                # Git Bible
    https://www.youtube.com/watch?v=MgnRFZJ7M2s   # Git Tutorial Deutsch #1 Was ist Git?
    https://www.youtube.com/watch?v=0PWEG6D2MVQ   # Git Tutorial Deutsch #2 Installation und Einrichtung von Git
    https://www.youtube.com/watch?v=AT0jf_qqggs   # Git Tutorial Deutsch #3 Die Grundlagen der Git Bash Kommandozeile
@@ -15,4 +16,6 @@ Installation: Git
 a) Download: https://git-scm.com/download/win
 b) double click on Git-2.40.0-64-bit.exe
 c) follow "Git Tutorial Deutsch #2"
+d) open the Git-Bash
+e) git --version                                # only as a checks
 

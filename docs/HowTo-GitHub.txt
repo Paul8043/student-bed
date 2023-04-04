@@ -1,7 +1,7 @@
 HowTo: Setup a GitHub-Account
 
 1. URL 
-   http://github.com
+   https://github.com
    
 2. Setup Login
 a) email-address must match with the value of "user.email" from git-installation

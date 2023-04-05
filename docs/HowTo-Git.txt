@@ -1,4 +1,4 @@
-Installation: Git
+HowTo: Installation of Git
 
 1. URL
    https://git-scm.com

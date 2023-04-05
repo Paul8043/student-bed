@@ -1,4 +1,4 @@
-HowTo: Setup VS-Code
+HowTo: Installation and Setup of VS-Code
 
 1. URL 
    https://code.visualstudio.com

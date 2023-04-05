@@ -1,0 +1,37 @@
+HowTo: Installation of Mamba
+
+1. URL 
+   https://github.com/conda-forge/miniforge
+
+2. Docs
+a) https://mamba.readthedocs.io/en/latest                                     # mamba doc
+b) https://docs.conda.io/projects/conda/en/stable/user-guide/index.html       # conda user-guide
+c) https://docs.conda.io/projects/conda/en/stable/user-guide/cheatsheet.html  # conda cheat-sheet
+   remember to replace "conda" by "mamba"
+
+3. Download
+a) visite https://github.com/conda-forge/miniforge
+b) go to the section mambaforge and take the windows version
+c) double-click on Mambaforge-Windows-x86_64.exe 
+
+4. What you have got
+a) a desktop icon called "Condaforge Prompt"
+   replace the title by "Mambaforge Prompt"
+b) mamba lives in its own environment called "base"
+   it uses internally a python 3.10.9
+   it is just used to run the mamba-commands
+   leave the "base"-environment untouched, it is for mamba only
+c) create additional environments for your application(s)
+
+5. Usage
+a) double-click on the "Mambaforge Prompt"
+b) activate the desired environment
+c) do you work in this "sand-box"
+d) deactivate environment
+
+6. Never Never
+a) do not deactivate the "base"-environment
+
+7. Additional Information
+a) Mamba has a few commands on top of conda. The repoquery-command shows a lot
+   of interesting information.

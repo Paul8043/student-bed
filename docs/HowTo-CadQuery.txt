@@ -1,4 +1,4 @@
-Installation: CadQuery & CQ-Editor
+HowTo: Installation of CadQuery & CQ-Editor
 
 1. URL
    https://github.com/CadQuery

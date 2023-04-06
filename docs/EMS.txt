@@ -7,15 +7,18 @@ a) mattress.length = 2100
 b) mattress.width  = 900
 c) mattress.height = 130
 
-2. Material
-a) material = beech
-
-3. Storage Area (used to store the disassembled bed)
+2. Storage Area (used to store the disassembled bed)
 a) storage.length = 1310
 b) storage.width  = 900
 c) storage.height = 260
 
-3. Additional Requirements
+3. Reclining height
+a) reclining.height = 465    # underside of mattress
+
+4. Material
+a) material = beech
+
+5. Additional Requirements
 a) simple & solid construction
 b) easy demountable
 c) setting-up time < 15 min

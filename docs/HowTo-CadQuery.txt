@@ -34,9 +34,12 @@ b) mamba install -c conda-forge -c cadquery python=3.11 cadquery=master cq-edito
    "python", "cadquery" and "cq-editor". In principle the specification of only 
    cq-editor=master should be sufficient. This means you get the latest and greatest version
    of "cq-editor". But because it is not so clear, which version for "cadquery" is selected,
-   I pin the version for cadquery and say "cadquery=master". Now we will the latest-and-
-   greatest version of both. But it is still unclear, which python version be used, therefore
-   I like also to pin "python" by specifying "python=3.11".
+   I pin the version for cadquery and say "cadquery=master". Now we will get the latest-and-
+   greatest version of both. But it is still unclear, which python version will be used.
+   Mamba will figure that out, and very often there are several alternatives left over.
+   Hopefully mamba selects the highest possible version. But in this case I also pin
+   python to my favorite version by specifying "python=3.11". There is no guarantee that
+   this combination can be realized. But it did ...
 c) inspect the output of the last command
    There should be no errors. Sometimes they are somewhat hidden in the long output-list.
 

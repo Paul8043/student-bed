@@ -55,7 +55,7 @@ class SimpleBed:
         return
     
     def build(self) -> None:
-        # parts & final assembly
+        # parts & assembly
         return
 
     pass

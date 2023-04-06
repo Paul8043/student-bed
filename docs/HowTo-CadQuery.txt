@@ -39,7 +39,7 @@ b) mamba install -c conda-forge -c cadquery python=3.11 cadquery=master cq-edito
    Mamba will figure that out, and very often there are several alternatives left over.
    Hopefully mamba selects the highest possible version. But in this case I also pin
    python to my favorite version by specifying "python=3.11". There is no guarantee that
-   this combination can be realized. But it did ...
+   this combination can be realized. I got it ...
 c) inspect the output of the last command
    There should be no errors. Sometimes they are somewhat hidden in the long output-list.
 
@@ -48,7 +48,7 @@ a) make sure that "cqe-env" is active. (should be the case from the last step)
 b) cq-editor -h
    This should show the help of cq-editor.
 
-5. Work done
+5. Work Done
 a) make sure that "cqe-env" is active.
 b) mamba deactivate
 c) mamba env list         # only as confirmation

@@ -110,3 +110,17 @@ Let us try to install mamba. All details are given [here](docs/HowTo-Mamba.txt)
 After this little detour we return back to the installation of [CadQuery](docs/HowTo-CadQuery.txt). The installation is more or less a one-liner!
 
 Now it is time for a longer coffee-break!
+
+# Mile-Stone #5: Say Hello
+
+Whenever a new environment has been set up, it is good practice to check, whether all tools are callable. For this purpose we say [hello to python](docs/hello-python.py). This is just an one-liner, a simple print-statement. We try this first on VS-Code. Make sure that the python-extension has been activated, then run the program. In the lower panel there is a tab, named Terminal, where you can find "Hello, Python" among some other text. Now we do the same thing with CQ-Editor. The one-liner appears in the Editior-Panel, but pressing the run-icon does not show any reaction, the console-panel at the bottom remains empty. This is unexpected behavior. Reading again the Readme.md of CQ-Editor reveals the output does not go to the console-panel, but it appears on the shell-window, from where the cq-editor has been started. Not very comfortable, but there is offered a better alternative named log().
+
+Now we say [hello-to-cadquery](docs/hello-cadquery.py). With VS-Code the python-program runs without any complaints, but there is no graphical output. This is expected behavior, because nothing is built in the code to show graphics. Now we try the same thing with CQ-Editor. And oh wonder the model appears on the right upper corner. The CQ-Editor can show models without any lines of code. This is great.
+
+But then why writing a section in the Readme.md which explains how to create graphical output, if it works without? There you can learn, only 2 functions are in charge with graphical output:
+
+* show_object()
+* debug()
+
+Uncomment lines #6 to #9 and see what happens. The top-face is colored red, and logger-output appears in the Log-Viewer in the lower-bottom corner. Both functions are only needed, if the graphical output has to be customized in some way. Now we make the cross-check on VS-Code and we see some dark clouds at the horizon, because it reports several errors. VS-Code does not know show_result(), debug() and log().
+

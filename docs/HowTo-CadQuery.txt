@@ -4,4 +4,49 @@ HowTo: Installation of CadQuery & CQ-Editor
    https://github.com/CadQuery
 	 
 2. Docu
+a) CadQuery:  https://github.com/CadQuery/cadquery
+b) CQ-Editor: https://github.com/CadQuery/CQ-editor
+Each of them has got an individual installation procedure. But what is the
+best way to install both together? Does a "cq-editor=master" also implies
+a "cadquery=master"? This is not so clear, at the moment.
+
+3. Creating the "sandbox" for CadQuery
+Decribed from a view-point directly after a mamba-installation.
+a) mamba env list
+   You see only one environment, named "base". It is reserved for mamba,
+   Never try to install something to "base".
+b) mamba create --name "cqe-env"
+   This will create an empty environment for CadQuery.
+c) mamba env list
+   Now we have 2 lines. But the asterisk still points to "base", which
+   means that "base" is the active environment.
+d) mamba activate cqe-env
+e) mamba env list
+   Now the asterisk has moved to "cqe-env". This is the ensvironment that
+   we use for our installations.
+
+3. Installation of CadQuery & CQ-Editor
+a) make sure that "cqe-env" is active
+b) mamba install -c conda-forge -c cadquery python=3.11 cadquery=master cq-editor=master
+   "cadquery" appears twice in the command-line. The channels, the name after a -c option
+   determines from where the packages should be fetched. In our case we have 2: "conda-forge"
+   and "cadquery". The remaining commandline-arguments specify packages, here we have 3:
+   "python", "cadquery" and "cq-editor". In principle the specification of only 
+   cq-editor=master should be sufficient. This means you get the latest and greatest version
+   of "cq-editor". But because it is not so clear, which version for "cadquery" is selected,
+   I pin the version for cadquery and say "cadquery=master". Now we will the latest-and-
+   greatest version of both. But it is still unclear, which python version be used, therefore
+   I like also to pin "python" by specifying "python=3.11".
+c) inspect the output of the last command
+   There should be no errors. Sometimes they are somewhat hidden in the long output-list.
+
+4. Start CQ-Editor
+a) make sure that "cqe-env" is active. (should be the case from the last step)
+b) cq-editor -h
+   This should show the help of cq-editor.
+
+5. Work done
+a) make sure that "cqe-env" is active.
+b) mamba deactivate
+c) mamba env list         # only as confirmation
  

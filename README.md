@@ -106,3 +106,7 @@ The environment-manager creates the needed virtual-environment. This is some kin
 The contours got shaped, the picture is clear enough to start. This means I will continue with "mamba".
 
 Let us try to install mamba. All details are given [here](docs/HowTo-Mamba.txt)
+
+After this little detour we return back to the installation of [CadQuery](docs/HowTo-CadQuery.txt). The installation is more or less a one-liner!
+
+Now it is time for a longer coffee-break!

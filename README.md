@@ -124,3 +124,34 @@ But then why writing a section in the Readme.md which explains how to create gra
 
 Uncomment lines #6 to #9 and see what happens. The top-face is colored red, and logger-output appears in the Log-Viewer in the lower-bottom corner. Both functions are only needed, if the graphical output has to be customized in some way. Now we make the cross-check on VS-Code and we see some dark clouds at the horizon, because it reports several errors. VS-Code does not know show_result(), debug() and log().
 
+# Mile-Stone #6: Template for Both
+
+Some stubs are created, so that the python-script can be run without any errors on both editors. The template is given [here](docs/template.py)
+
+# Mile-Stone #7: Recommended Workflow
+
+There are many variants possible. The sequence below is easy to use for newbies.
+
+1) create a repository on GitHub
+2) clone it to your local machine
+3) take the template from the docs-directory as a skeleton to start with
+4) activate environment via mamba
+5) start VS-Code & load your folder
+6) start CQ-Editor and load your python-program
+7) edit & modify your program, SQ-Editor will draw the model after every change
+8) commit your changes to git, and optionally to GitHub
+9) repeat steps 7 to 8 
+10) close CQ-Editor
+11) close VS-Code
+12) deactivate environment via mamba
+
+If the repository is created first on GitHub, this has the advantage that the relationship between "remote" and "local" is established from the very beginning.
+
+Some addition hints to "git". The git-database, which holds all your revisions, is stored in a hidden folder named ".git" and it is stored in your project-directory. Never touch this folder and its contents, it would lead to a corrupt database, and all your version can disappear. Having ".git" directly under your project-directory implies that when the project-folder is moved, all revisions go alone automatically. There is another dot-file, named ".gitignore". It controls which files and sub-folders are put into ".git". Files and sub-folders excluded here, remain untouched by git, they are untracked. These files and folders can resides anywhere in your project-tree. They remain untouched. They will never appear on GitHub. Keep in mind, "git" has been designed for processing text-files, not for binaries. Binaries can be added, but they consume a lot of space. For each change a copy of the binary is added. Because of that do not store large binary files (BLOBs). The repository will grow quickly and uploads & downloads will take very long.
+
+Steps 7 & 8 need some more explanation. "edit" and "save" are clear. Revision-handling with git is a 3-step-approach: 
+* add a file, after saving, to the stage-area. A file there is marked with "A".
+* make a commit, the contents of the stage-area goes to the ".git"-folder
+* press synchronize, this works in both directions, after that the local changes appear on GitHub.
+
+The CQ-Editor is primarily used as a model-viewer. In the View-menu turn off all unwanted panels, except "Log viewer" and "Current traceback". And in the Preference-Section enable "autoreload". This flag is required, otherwise an automated model-refresh does not take place, if the model has been changed with VS-Code.

@@ -28,12 +28,12 @@ def echo(message) -> None:
 # all measures are in mm
 
 measures ={
-    "@.plate.thickness":18,
-    "@.side.length":68,
-    "@.lying.height":465,
+    "@plate.thickness":18,
+    "@side.length":68,
     "mattress.height":180,
     "mattress.width":900,
     "mattress.length":2100,
+    "mattress.altitude":465,
     "storage.height":260,
     "storage.width":900,
     "storage.length":1310
@@ -41,17 +41,22 @@ measures ={
 
 # derived measures
 
-measures["stringer.side"]   = measures["@.side.length"]
-measures["stringer.length"] = measures["mattress.width"]*0.5
+measures["stringer.side"]   = measures["@side.length"]
+measures["stringer.length"] = measures["mattress.length"]*0.5
+measures["ledger.side"]     = measures["@side.length"]
+measures["ledger.length"]   = measures["mattress.width"]-2*measures["@side.length"]
+measures["batten.height"]   = measures["@plate.thickness"]
+measures["batten.width"]    = measures["@side.length"]
+measures["batten.length"]   = measures["mattress.width"]
+measures["jamb.side"]       = measures["@side.length"]
+measures["jamb.length"]     = measures["mattress.altitude"]-measures["@side.length"]-2*measures["@plate.thickness"]
+
 
 # model class
 
 class SimpleBed:
 
     def __init__(self,measures) -> None:
-        self.mattress  = None
-        self.storage   = None
-        self.stringer  = None
         self.model     = None
         self.measures  = measures
         self.dump()
@@ -66,39 +71,35 @@ class SimpleBed:
         echo("")
         return
     
-    def make_mattress(self) -> None:
-        mh = measures["mattress.height"]
-        mw = measures["mattress.width"]
-        ml = measures["mattress.length"]
-        mattress = cq.Workplane("XY")
-        mattress = mattress.box(ml,mw,mh)
-        self.mattress = mattress
-        #show_object(mattress,name="mattress",options={"alpha":0.2,"color":(255,170,0)})
-        return
-    
-    def make_storage(self) -> None:
-        sh = measures["storage.height"]
-        sw = measures["storage.width"]
-        sl = measures["storage.length"]
-        storage = cq.Workplane("XY")
-        storage = storage.box(sl,sw,sh)
-        self.storage = storage
-        #show_object(storage,name="storage",options={"alpha":0.2,"color":"cyan"})
-        return
-    
-    def make_stringer(self) -> None:
+    def build(self) -> None:
         ss = measures["stringer.side"]
         sl = measures["stringer.length"]
-        stringer = cq.Workplane("XY")
-        stringer = stringer.box(sl,ss,ss)
-        self.stringer = stringer
-        show_object(stringer,name="stringer",options={"alpha":0.1,"color":"khaki"})
-        return
-    
-    def build(self) -> None:
-        self.make_mattress()
-        self.make_storage()
-        self.make_stringer()
+        stringer = cq.Workplane("XY").box(sl,ss,ss)
+        #show_object(stringer,name="stringer",options={"alpha":0.2,"color":(255,170,0)})
+
+        ls = measures["ledger.side"]
+        ll = measures["ledger.length"]
+        ledger = cq.Workplane("XY").box(ls,ll,ls)
+        #show_object(ledger,name="ledger",options={"alpha":0.2,"color":(255,170,0)})
+
+        bh = measures["batten.height"]
+        bw = measures["batten.width"]
+        bl = measures["batten.length"]
+        batten = cq.Workplane("XY").box(bw,bl,bh)
+        #show_object(batten,name="batten",options={"alpha":0.2,"color":(255,170,0)})
+
+        js = measures["jamb.side"]
+        jl = measures["jamb.length"]
+        jamb = cq.Workplane("XY").box(js,js,jl)
+        #show_object(jamb,name="jamb",options={"alpha":0.2,"color":(255,170,0)})
+
+        stringer_moved = stringer.translate((600,0,250))
+        ledger_moved   = ledger.translate((0,500,250))
+        batten_moved   = batten.translate((0,500,350))
+        parts = jamb.union(stringer_moved).union(ledger_moved).union(batten_moved)
+        show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
+
+        self.model = parts
         return
 
     pass

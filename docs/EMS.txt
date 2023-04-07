@@ -3,20 +3,19 @@ External Model Specification
 Note: all measures are given in millimeters
 
 1. Mattress:
-a) mattress.length = 2100
-b) mattress.width  = 900
-c) mattress.height = 130
+a) mattress.length   = 2100
+b) mattress.width    = 900
+c) mattress.height   = 130
+d) mattress.altitude = 465  # underside of mattress
 
 2. Storage Area (used to store the disassembled bed)
 a) storage.length = 1310
 b) storage.width  = 900
 c) storage.height = 260
 
-3. Reclining height
-a) reclining.height = 465    # underside of mattress
-
-4. Material
-a) material = beech
+3. Material
+a) wood   = beech
+b) screws = stainless steel (quality A2) 
 
 5. Additional Requirements
 a) simple & solid construction

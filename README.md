@@ -157,3 +157,13 @@ Steps 7 & 8 need some more explanation. "edit" and "save" are clear. Revision-ha
 * press synchronize, this works in both directions, after that the local changes appear on GitHub.
 
 The CQ-Editor is primarily used as a model-viewer. In the View-menu turn off all unwanted panels, except "Log viewer" and "Current traceback". And in the Preference-Section enable "autoreload". This flag is required, otherwise an automated model-refresh does not take place, if the model has been changed with VS-Code.
+
+# Mile-Stone #8: Individual Parts
+
+The design is kept simple. The duckboard is split into 2 halves (not visible at the moment). In total we need only 4 different parts:
+* jambs 
+* stringers
+* ledgers
+* battens
+
+[very first impression](docs/parts.png)

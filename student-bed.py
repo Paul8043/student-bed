@@ -28,7 +28,8 @@ def echo(message) -> None:
 # all measures are in mm
 
 measures ={
-    "@plate.thickness":18,
+    "@thickness.slim":18,
+    "@thickness.plumb":27,
     "@side.length":68,
     "mattress.height":180,
     "mattress.width":900,
@@ -41,16 +42,15 @@ measures ={
 
 # derived measures
 
-measures["stringer.side"]   = measures["@side.length"]
+measures["stringer.height"] = measures["@thickness.plumb"]
+measures["stringer.width"]  = measures["@side.length"]
 measures["stringer.length"] = measures["mattress.length"]*0.5
-measures["ledger.side"]     = measures["@side.length"]
-measures["ledger.length"]   = measures["mattress.width"]-2*measures["@side.length"]
-measures["batten.height"]   = measures["@plate.thickness"]
+measures["batten.height"]   = measures["@thickness.slim"]
 measures["batten.width"]    = measures["@side.length"]
 measures["batten.length"]   = measures["mattress.width"]
+measures["batten.gap"]      = (measures["stringer.length"]-9*measures["batten.width"])/8
 measures["jamb.side"]       = measures["@side.length"]
-measures["jamb.length"]     = measures["mattress.altitude"]-measures["@side.length"]-2*measures["@plate.thickness"]
-
+measures["jamb.length"]     = measures["mattress.altitude"]-measures["@thickness.slim"]-measures["@thickness.plumb"]
 
 # model class
 
@@ -72,32 +72,45 @@ class SimpleBed:
         return
     
     def build(self) -> None:
-        ss = measures["stringer.side"]
-        sl = measures["stringer.length"]
-        stringer = cq.Workplane("XY").box(sl,ss,ss)
+        sh = self.measures["stringer.height"]
+        sw = self.measures["stringer.width"]
+        sl = self.measures["stringer.length"]
+        stringer = cq.Workplane("XY").box(sl,sw,sh)
         #show_object(stringer,name="stringer",options={"alpha":0.2,"color":(255,170,0)})
 
-        ls = measures["ledger.side"]
-        ll = measures["ledger.length"]
-        ledger = cq.Workplane("XY").box(ls,ll,ls)
-        #show_object(ledger,name="ledger",options={"alpha":0.2,"color":(255,170,0)})
-
-        bh = measures["batten.height"]
-        bw = measures["batten.width"]
-        bl = measures["batten.length"]
+        bh = self.measures["batten.height"]
+        bw = self.measures["batten.width"]
+        bl = self.measures["batten.length"]
         batten = cq.Workplane("XY").box(bw,bl,bh)
         #show_object(batten,name="batten",options={"alpha":0.2,"color":(255,170,0)})
 
-        js = measures["jamb.side"]
-        jl = measures["jamb.length"]
+        js = self.measures["jamb.side"]
+        jl = self.measures["jamb.length"]
         jamb = cq.Workplane("XY").box(js,js,jl)
         #show_object(jamb,name="jamb",options={"alpha":0.2,"color":(255,170,0)})
 
         stringer_moved = stringer.translate((600,0,250))
-        ledger_moved   = ledger.translate((0,500,250))
         batten_moved   = batten.translate((0,500,350))
-        parts = jamb.union(stringer_moved).union(ledger_moved).union(batten_moved)
-        show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
+        parts = jamb.union(stringer_moved).union(batten_moved)
+        #show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
+
+        zo = 0.5*(self.measures["stringer.height"]+self.measures["batten.height"])
+        yo = 0.5*(self.measures["mattress.width"]-self.measures["stringer.width"])
+        xo = 0.5*(self.measures["stringer.length"]-self.measures["batten.width"])
+        skew = self.measures["batten.width"]+self.measures["batten.gap"]
+        stringer_front = stringer.translate((0,+yo,0))
+        stringer_back  = stringer.translate((0,-yo,0))
+        duckboard = stringer_front.union(stringer_back)
+        duckboard = duckboard.union(batten.translate((0,0,zo)))        # middle
+        duckboard = duckboard.union(batten.translate((-xo,0,zo)))      # left most
+        duckboard = duckboard.union(batten.translate((+xo,0,zo)))      # right most
+        duckboard = duckboard.union(batten.translate((-1*skew,0,zo)))  # 1 skew left
+        duckboard = duckboard.union(batten.translate((+1*skew,0,zo)))  # 1 skew right
+        duckboard = duckboard.union(batten.translate((-2*skew,0,zo)))  # 2 skew left
+        duckboard = duckboard.union(batten.translate((+2*skew,0,zo)))  # 2 Skew right
+        duckboard = duckboard.union(batten.translate((-3*skew,0,zo)))  # 3 skew left
+        duckboard = duckboard.union(batten.translate((+3*skew,0,zo)))  # 3 skew right
+        show_object(duckboard,name="duckbboard",options={"alpha":0.2,"color":(255,170,0)})
 
         self.model = parts
         return

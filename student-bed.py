@@ -134,12 +134,12 @@ class SimpleBed:
         half = half.union(jamb.translate((+xo,-yo,uplift)))  # back  right
         half = half.union(jamb.translate((-xo,+yo,uplift)))  # front left
         half = half.union(jamb.translate((+xo,+yo,uplift)))  # front right
-        show_object(half,name="half",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(half,name="half",options={"alpha":0.2,"color":(255,170,0)})
 
         align = 0.5*self.measures["stringer.length"]
         bed  = half.translate((-align,0,0))
         bed  = bed.union(half.translate((+align,0,0)))
-        #show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170, 0)})
+        show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170, 0)})
 
         self.model = bed
         return

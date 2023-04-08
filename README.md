@@ -2,7 +2,7 @@
 
 # Student-Bed
 
-![appetizer](docs/duckboard.png)
+![appetizer](docs/bed.png)
 
 # Preamble
 
@@ -160,13 +160,22 @@ The CQ-Editor is primarily used as a model-viewer. In the View-menu turn off all
 
 # Mile-Stone #8: Let the Model grow
 
-The design is kept simple. The duckboard is split into 2 halves (not visible at the moment). In total we need only 3 different parts:
+The design is kept simple. The duckboard is split into 2 halves (not visible at the moment). In total we need only 4 different parts:
 * jambs 
 * stringers
+* ledgers
 * battens
 
 [parts](docs/parts.png)
 
-All battens are loaded on top of the stringers.
+All battens are loaded on top of the stringers and ledgers.
 
 [duckboard](docs/duckboard.png)
+
+Putting a jamb below each corner and the half bed is ready.
+
+[half](docs/half.png)
+
+And both halves together make the complete bed. Viola.
+
+[bed](docs/bed.png)

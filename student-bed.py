@@ -45,6 +45,9 @@ measures ={
 measures["stringer.height"] = measures["@thickness.plumb"]
 measures["stringer.width"]  = measures["@side.length"]
 measures["stringer.length"] = measures["mattress.length"]*0.5
+measures["ledger.height"]   = measures["@thickness.plumb"]
+measures["ledger.width"]    = measures["@side.length"]
+measures["ledger.length"]   = measures["mattress.width"]-2*measures["stringer.width"]
 measures["batten.height"]   = measures["@thickness.slim"]
 measures["batten.width"]    = measures["@side.length"]
 measures["batten.length"]   = measures["mattress.width"]
@@ -78,6 +81,12 @@ class SimpleBed:
         stringer = cq.Workplane("XY").box(sl,sw,sh)
         #show_object(stringer,name="stringer",options={"alpha":0.2,"color":(255,170,0)})
 
+        lh = self.measures["ledger.height"]
+        lw = self.measures["ledger.width"]
+        ll = self.measures["ledger.length"]
+        ledger = cq.Workplane("XY").box(lw,ll,lh)
+        #show_object(ledger,name="ledger",options={"alpha":0.2,"color":(255,170,0)})
+
         bh = self.measures["batten.height"]
         bw = self.measures["batten.width"]
         bl = self.measures["batten.length"]
@@ -90,17 +99,23 @@ class SimpleBed:
         #show_object(jamb,name="jamb",options={"alpha":0.2,"color":(255,170,0)})
 
         stringer_moved = stringer.translate((600,0,250))
+        ledger_moved   = ledger.translate((0,500,250))
         batten_moved   = batten.translate((0,500,350))
-        parts = jamb.union(stringer_moved).union(batten_moved)
+        parts = jamb.union(stringer_moved).union(ledger_moved).union(batten_moved)
         #show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
 
         zo = 0.5*(self.measures["stringer.height"]+self.measures["batten.height"])
         yo = 0.5*(self.measures["mattress.width"]-self.measures["stringer.width"])
         xo = 0.5*(self.measures["stringer.length"]-self.measures["batten.width"])
         skew = self.measures["batten.width"]+self.measures["batten.gap"]
+        lift = 0.5*self.measures["stringer.height"]+self.measures["jamb.length"]
         stringer_front = stringer.translate((0,+yo,0))
         stringer_back  = stringer.translate((0,-yo,0))
+        ledger_left    = ledger.translate((-xo,0,0))
+        ledger_right   = ledger.translate((+xo,0,0))
         duckboard = stringer_front.union(stringer_back)
+        duckboard = duckboard.union(ledger_left)
+        duckboard = duckboard.union(ledger_right)
         duckboard = duckboard.union(batten.translate((0,0,zo)))        # middle
         duckboard = duckboard.union(batten.translate((-xo,0,zo)))      # left most
         duckboard = duckboard.union(batten.translate((+xo,0,zo)))      # right most
@@ -110,9 +125,23 @@ class SimpleBed:
         duckboard = duckboard.union(batten.translate((+2*skew,0,zo)))  # 2 Skew right
         duckboard = duckboard.union(batten.translate((-3*skew,0,zo)))  # 3 skew left
         duckboard = duckboard.union(batten.translate((+3*skew,0,zo)))  # 3 skew right
-        show_object(duckboard,name="duckbboard",options={"alpha":0.2,"color":(255,170,0)})
+        duckboard = duckboard.translate((0,0,lift))
+        #show_object(duckboard,name="duckbboard",options={"alpha":0.2,"color":(255,170,0)})
 
-        self.model = parts
+        uplift = 0.5*self.measures["jamb.length"]
+        half = duckboard
+        half = half.union(jamb.translate((-xo,-yo,uplift)))  # back  left
+        half = half.union(jamb.translate((+xo,-yo,uplift)))  # back  right
+        half = half.union(jamb.translate((-xo,+yo,uplift)))  # front left
+        half = half.union(jamb.translate((+xo,+yo,uplift)))  # front right
+        #show_object(half,name="half",options={"alpha":0.2,"color":(255,170,0)})
+
+        align = 0.5*self.measures["stringer.length"]
+        bed  = half.translate((-align,0,0))
+        bed  = bed.union(half.translate((+align,0,0)))
+        show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170, 0)})
+
+        self.model = bed
         return
 
     pass

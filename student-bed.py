@@ -54,6 +54,10 @@ measures["batten.length"]   = measures["mattress.width"]
 measures["batten.gap"]      = (measures["stringer.length"]-9*measures["batten.width"])/8
 measures["jamb.side"]       = measures["@side.length"]
 measures["jamb.length"]     = measures["mattress.altitude"]-measures["@thickness.slim"]-measures["@thickness.plumb"]
+measures["angle.depth"]     = measures["@side.length"]
+measures["angle.limb"]      = measures["@side.length"]*2.5
+measures["angle.thickness"] = measures["@thickness.slim"]
+measures["angle.chamfer"]   = measures["angle.limb"]-measures["angle.thickness"]
 
 # model class
 
@@ -98,6 +102,15 @@ class SimpleBed:
         jamb = cq.Workplane("XY").box(js,js,jl)
         #show_object(jamb,name="jamb",options={"alpha":0.2,"color":(255,170,0)})
 
+        ad = self.measures["angle.depth"]
+        al = self.measures["angle.limb"]
+        at = self.measures["angle.thickness"]
+        ac = self.measures["angle.chamfer"]
+        angle = cq.Workplane("XY").box(al,ad,al,centered=False)
+        angle = angle.faces(">X or >Y or <Z").shell(-at)
+        angle = angle.edges(">X and <Z").chamfer(ac)
+        show_object(angle,name="angle",options={"alpha":0.2,"color":(255,170,0)})
+
         stringer_moved = stringer.translate((600,0,250))
         ledger_moved   = ledger.translate((0,500,250))
         batten_moved   = batten.translate((0,500,350))
@@ -136,10 +149,14 @@ class SimpleBed:
         half = half.union(jamb.translate((+xo,+yo,uplift)))  # front right
         #show_object(half,name="half",options={"alpha":0.2,"color":(255,170,0)})
 
+        half_stl = half
+        #half_stl = half_stl.rotate((0,0,0),(0,1,0),180).scale(0.1)
+        #show_object(half_stl,name="half_stl",options={"alpha":0.2,"color":(255,170,0)})
+
         align = 0.5*self.measures["stringer.length"]
         bed  = half.translate((-align,0,0))
         bed  = bed.union(half.translate((+align,0,0)))
-        show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170, 0)})
+        #show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170, 0)})
 
         self.model = bed
         return

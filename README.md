@@ -176,6 +176,6 @@ Putting a jamb below each corner and the half bed is ready.
 
 [half](docs/half.png)
 
-And both halves together make the complete bed. Viola.
+And both halves together make the complete bed.
 
 [bed](docs/bed.png)

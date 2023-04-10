@@ -179,6 +179,7 @@ class SimpleBed:
         #show_object(srcxpyp,name="srcxpyp",options={"alpha":0.2,"color":(255,170,0)})
         show_object(stringer_rib,name="stringer_rib",options={"alpha":0.2,"color":(255,170,0)})
 
+        #ToDo: add new parts
         stringer_moved = stringer.translate((600,0,250))
         ledger_moved   = ledger.translate((0,500,250))
         batten_moved   = batten_3.translate((0,500,350))

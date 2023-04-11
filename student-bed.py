@@ -31,6 +31,7 @@ measures ={
     "@thickness.1":18,
     "@thickness.2":27,
     "@side.length":120,
+    "@rib.jut":15,
     "mattress.height":180,
     "mattress.width":900,
     "mattress.length":2100,
@@ -42,41 +43,41 @@ measures ={
 
 # derived measures
 
-measures["@width.1"]         = measures["@side.length"]*0.5
-measures["@width.2"]         = measures["@side.length"]*2/3
-measures["@width.3"]         = measures["@side.length"]
+measures["@width.1"]           = measures["@side.length"]*0.5
+measures["@width.2"]           = measures["@side.length"]*2/3
+measures["@width.3"]           = measures["@side.length"]
 
-measures["stringer.height"]  = measures["@thickness.2"]
-measures["stringer.width"]   = measures["@width.3"]
-measures["stringer.length"]  = measures["mattress.length"]*0.5
+measures["stringer.thickness"] = measures["@thickness.2"]
+measures["stringer.width"]     = measures["@width.3"]
+measures["stringer.length"]    = measures["mattress.length"]*0.5
 
-measures["ledger.height"]    = measures["@thickness.2"]
-measures["ledger.width"]     = measures["@width.3"]
-measures["ledger.length"]    = measures["mattress.width"]-2*measures["@width.3"]
+measures["ledger.thickness"]   = measures["@thickness.2"]
+measures["ledger.width"]       = measures["@width.3"]
+measures["ledger.length"]      = measures["mattress.width"]-2*measures["@width.3"]
 
-measures["batten.height"]    = measures["@thickness.1"]
-measures["batten.width.1"]   = measures["@width.1"]
-measures["batten.width.2"]   = measures["@width.2"]
-measures["batten.width.3"]   = measures["@width.3"]
-measures["batten.length"]    = measures["mattress.width"]
-measures["batten.gap"]       = (measures["stringer.length"]-measures["batten.width.3"]-5*measures["batten.width.2"]-measures["batten.width.1"])/6
+measures["rib.thickness"]      = measures["@thickness.2"]
+measures["rib.width"]          = measures["@width.2"]
+measures["rib.length.1"]       = measures["ledger.length"]+2*(measures["@thickness.2"]+measures["@rib.jut"])
+measures["rib.length.2"]       = measures["stringer.length"]-1.5*measures["@side.length"]+2*(measures["@thickness.2"]+measures["@rib.jut"])
+measures["rib.cut.width"]      = measures["@thickness.2"]
+measures["rib.cut.depth"]      = 4.5
+measures["rib.cut.air"]        = 0.2
 
-measures["cutoff.clearance"]   = 0.2
-measures["cutoff.thickness.1"] = measures["@thickness.1"]+measures["cutoff.clearance"]
-measures["cutoff.thickness.2"] = measures["@thickness.2"]+measures["cutoff.clearance"]
-measures["cutoff.width"]       = measures["@width.2"]+measures["cutoff.clearance"]
-measures["cutoff.length"]      = (measures["@width.2"]+measures["cutoff.clearance"])*2
-measures["cutoff.depth"]       = 4.5+measures["cutoff.clearance"]
+measures["batten.height"]      = measures["@thickness.1"]
+measures["batten.width.1"]     = measures["@width.1"]
+measures["batten.width.2"]     = measures["@width.2"]
+measures["batten.width.3"]     = measures["@width.3"]
+measures["batten.length"]      = measures["mattress.width"]
+measures["batten.gap"]         = 78
+measures["batten.extra"]       = (measures["stringer.length"]-measures["batten.width.3"]
+-5*measures["batten.width.2"]-6*measures["batten.gap"]-measures["batten.width.1"])/2
 
-measures["jamb.thickness"]   = measures["@thickness.2"]
-measures["jamb.side"]        = measures["@side.length"]
-measures["jamb.length"]      = measures["mattress.altitude"]-measures["@thickness.1"]-measures["@thickness.2"]
-
-measures["rib.thickness"]    = measures["@thickness.2"]
-measures["rib.width"]        = measures["@width.2"]
-measures["rib.jut"]          = 15
-measures["rib.length.1"]     = measures["ledger.length"]+2*(measures["@thickness.2"]+measures["rib.jut"])
-measures["rib.length.2"]     = measures["stringer.length"]-1.5*measures["@side.length"]+2*(measures["@thickness.2"]+measures["rib.jut"])
+measures["jamb.thickness"]  = measures["@thickness.2"]
+measures["jamb.side"]       = measures["@side.length"]
+measures["jamb.length"]     = measures["mattress.altitude"]-measures["@thickness.1"]-measures["@thickness.2"]
+measures["jamb.cut.width"]  = measures["@thickness.1"]
+measures["jamb.cut.depth"]  = measures["@width.2"]
+measures["jamb.cut.air"]    = 0.2
 
 # model class
 
@@ -98,16 +99,16 @@ class SimpleBed:
         return
     
     def build(self) -> None:
-        sh = self.measures["stringer.height"]
+        st = self.measures["stringer.thickness"]
         sw = self.measures["stringer.width"]
         sl = self.measures["stringer.length"]
-        stringer = cq.Workplane("XY").box(sl,sw,sh)
+        stringer = cq.Workplane("XY").box(sl,sw,st)
         #show_object(stringer,name="stringer",options={"alpha":0.2,"color":(255,170,0)})
 
-        lh = self.measures["ledger.height"]
+        lt = self.measures["ledger.thickness"]
         lw = self.measures["ledger.width"]
         ll = self.measures["ledger.length"]
-        ledger = cq.Workplane("XY").box(lw,ll,lh)
+        ledger = cq.Workplane("XY").box(lw,ll,lt)
         #show_object(ledger,name="ledger",options={"alpha":0.2,"color":(255,170,0)})
 
         bh   = self.measures["batten.height"]
@@ -120,64 +121,85 @@ class SimpleBed:
         batten_3 = cq.Workplane("XY").box(bw_3,bl,bh)     # large (outwards)
         #show_object(batten_3,name="batten",options={"alpha":0.2,"color":(255,170,0)})
 
-        jt = self.measures["jamb.thickness"]
-        js = self.measures["jamb.side"]
-        jl = self.measures["jamb.length"]
-        jct = self.measures["cutoff.thickness.1"]
-        jcw = self.measures["cutoff.width"]
-        jcl = self.measures["cutoff.length"]
-        jcxp = cq.Workplane("XY").box(jcw,jct,jcl).translate((+0.5*js,0,0.5*jl))      # jamb cutout x+
-        jcxm = cq.Workplane("XY").box(jcw,jct,jcl).translate((-0.5*js,0,0.5*jl))      # jamb cutout x-
-        jcyp = cq.Workplane("XY").box(jct,jcw,jcl).translate((0,+0.5*js,0.5*jl))      # jamb cutout y+
-        jamb        = cq.Workplane("XY").box(js,js,jl).faces("<Z or >Z").shell(-jt)   # shell
-        jamb_corner = jamb.cut(jcxp).cut(jcyp)
-        jamb_middle = jamb_corner.cut(jcxm)
-        #show_object(jcxm,name="cutoff",options={"alpha":0.2,"color":(255,170,0)})    
+        jt  = self.measures["jamb.thickness"]
+        js  = self.measures["jamb.side"]
+        jl  = self.measures["jamb.length"]
+        jcw = self.measures["jamb.cut.width"]
+        jcd = self.measures["jamb.cut.depth"]
+        jca = self.measures["jamb.cut.air"]
+        jcx  = js
+        jcy  = 2*(jcw+jca)
+        jcz  = 2*(jcd+jca)
+        jc          = cq.Workplane("XY").box(jcx,jcy,jcz).translate((0.5*js,0,0.5*jl))  # cutter
+        jamb        = cq.Workplane("XY").box(js,js,jl).faces("<Z or >Z").shell(-jt)     # shell
+        jamb_corner = jamb.cut(jc.rotate((0,0,0),(0,0,1),0))                            # cut x+
+        jamb_corner = jamb_corner.cut(jc.rotate((0,0,0),(0,0,1),90))                    # cut y+
+        jamb_middle = jamb_corner.cut(jc.rotate((0,0,0),(0,0,1),180))                   # cut x-
+        #show_object(jc,name="cutter",options={"alpha":0.2,"color":(255,170,0)})    
         #show_object(jamb_middle,name="jamb",options={"alpha":0.2,"color":(255,170,0)})
 
-        lrt  = self.measures["rib.thickness"]
-        lrw  = self.measures["rib.width"]
-        lrl  = self.measures["rib.length.1"]
-        lrj  = self.measures["rib.jut"]
-        lrct = self.measures["cutoff.thickness.2"]
-        lrcw = self.measures["cutoff.width"]
-        lrcl = self.measures["cutoff.length"]
-        lrcd = self.measures["cutoff.depth"]
-        lrxo = 0.5*(lrt+lrcw)-lrcd
-        lryo = 0.5*(lrl-lrt)-lrj
-        lrcypxp = cq.Workplane("XY").box(lrcw,lrct,lrcl).translate((+lrxo,+lryo,0))      # ledger rib cutout y+ x+
-        lrcypxm = cq.Workplane("XY").box(lrcw,lrct,lrcl).translate((-lrxo,+lryo,0))      # ledger rib cutout y+ x-
-        lrcymxp = cq.Workplane("XY").box(lrcw,lrct,lrcl).translate((+lrxo,-lryo,0))      # ledger rib cutout y- x+
-        lrcymxm = cq.Workplane("XY").box(lrcw,lrct,lrcl).translate((-lrxo,-lryo,0))      # ledger rib cutout y- x-
-        ledger_rib  = cq.Workplane("XY").box(lrt,lrl,lrw)          # rib for ledger
-        ledger_rib = ledger_rib.cut(lrcypxp)
-        ledger_rib = ledger_rib.cut(lrcypxm)
-        ledger_rib = ledger_rib.cut(lrcymxp)
-        ledger_rib = ledger_rib.cut(lrcymxm)
-        #show_object(lrcypxm,name="rlcypxp",options={"alpha":0.2,"color":(255,170,0)})
-        #show_object(ledger_rib,name="ledger_rib",options={"alpha":0.2,"color":(255,170,0)})
+        rt   = self.measures["rib.thickness"]
+        rw   = self.measures["rib.width"]
+        rl_1 = self.measures["rib.length.1"]
+        rl_2 = self.measures["rib.length.2"]
+        rj   = self.measures["@rib.jut"]
+        rcw  = self.measures["rib.cut.width"]
+        rcd  = self.measures["rib.cut.depth"]
+        rca  = self.measures["rib.cut.air"]
 
-        srt  = self.measures["rib.thickness"]
-        srw  = self.measures["rib.width"]
-        srl  = self.measures["rib.length.2"]
-        srj  = self.measures["rib.jut"]
-        srct = self.measures["cutoff.thickness.2"]
-        srcw = self.measures["cutoff.width"]
-        srcl = self.measures["cutoff.length"]
-        srcd = self.measures["cutoff.depth"]
-        srxo = 0.5*(srl-srt)-srj
-        sryo = 0.5*(srt+srcw)-srcd
-        srcxpyp = cq.Workplane("XY").box(srct,srcw,srcl).translate((+srxo,+sryo,0))      # stringer rib cutout x+ y+
-        srcxpym = cq.Workplane("XY").box(srct,srcw,srcl).translate((+srxo,-sryo,0))      # stringer rib cutout x+ y-
-        srcxmyp = cq.Workplane("XY").box(srct,srcw,srcl).translate((-srxo,+sryo,0))      # stringer rib cutout x- y+
-        srcxmym = cq.Workplane("XY").box(srct,srcw,srcl).translate((-srxo,-sryo,0))      # stringer rib cutout x- y-
-        stringer_rib  = cq.Workplane("XY").box(srl,srt,srw)          # rib for stringer
-        stringer_rib = stringer_rib.cut(srcxpyp)
-        stringer_rib = stringer_rib.cut(srcxpym)
-        stringer_rib = stringer_rib.cut(srcxmyp)
-        stringer_rib = stringer_rib.cut(srcxmym)
-        #show_object(srcxpyp,name="srcxpyp",options={"alpha":0.2,"color":(255,170,0)})
-        show_object(stringer_rib,name="stringer_rib",options={"alpha":0.2,"color":(255,170,0)})
+        rcx  = rcw+2*rca
+        rcy  = rcw+2*rca
+        rcz  = 2*rw
+        rlxo = 0.5*(rl_1-rcw)-rj
+        rsxo = 0.5*(rl_2-rcw)-rj
+        ryo  = 0.5*(rcy+rt)
+        rd   = rcd+rca
+        rlcxpyp      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((+rlxo,+ryo-rd,0))   # ledger cutter x+ y+
+        rlcxpym      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((+rlxo,-ryo+rd,0))   # ledger cutter x+ y-
+        rlcxmyp      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((-rlxo,+ryo-rd,0))   # ledger cutter x- y+
+        rlcxmym      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((-rlxo,-ryo+rd,0))   # ledger cutter x- y-
+        rib_ledger   = cq.Workplane("XY").box(rl_1,rt,rw).translate((0,0,0))              # rib for ledger
+        rib_ledger   = rib_ledger.cut(rlcxpyp)
+        rib_ledger   = rib_ledger.cut(rlcxpym)
+        rib_ledger   = rib_ledger.cut(rlcxmyp)
+        rib_ledger   = rib_ledger.cut(rlcxmym)
+        rscxpyp      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((+rsxo,+ryo-rd,0))   # stringer cutter x+ y+
+        rscxpym      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((+rsxo,-ryo+rd,0))   # stringer cutter x+ y-
+        rscxmyp      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((-rsxo,+ryo-rd,0))   # stringer cutter x- y+
+        rscxmym      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((-rsxo,-ryo+rd,0))   # stringer cutter x- y-
+        rib_stringer = cq.Workplane("XY").box(rl_2,rt,rw).translate((0,0,0))              # rib for stringer
+        rib_stringer = rib_stringer.cut(rscxpyp)
+        rib_stringer = rib_stringer.cut(rscxpym)
+        rib_stringer = rib_stringer.cut(rscxmyp)
+        rib_stringer = rib_stringer.cut(rscxmym)
+        #show_object(rscxpym,name="cutter",options={"alpha":0.2,"color":(255,170,0)}) 
+        #show_object(rib_ledger,name="rib",options={"alpha":0.2,"color":(255,170,0)})   
+        show_object(rib_stringer,name="rib",options={"alpha":0.2,"color":(255,170,0)})
+
+        fsrt = self.measures["rib.thickness"]
+        fsrl = self.measures["rib.length.2"]
+        fsrj = self.measures["@rib.jut"]
+        fsl  = self.measures["stringer.length"]
+        fll  = self.measures["ledger.length"]
+        fjs  = self.measures["jamb.side"]
+        fjl  = self.measures["jamb.length"]
+        frw  = self.measures["rib.width"]
+        fxo  = fsl-0.5*fjs
+        fyo  = 0.5*(fll+fjs)
+        fzo  = 0.5*(fjl-frw)
+        frxo = 0.5*fsl-fsrt
+        #frame = jamb_middle.translate((0,-fyo,0))                                                 # jamb front middle
+        #frame = frame.union(jamb_middle.rotateAboutCenter((0,0,1),180).translate((0,+fyo,0)))     # jamb back  middle
+        #frame = frame.union(jamb_corner.rotateAboutCenter((0,0,1),180).translate((+fxo,+fyo,0)))  # jamb front left
+        #frame = frame.union(jamb_corner.rotateAboutCenter((0,0,1),-90).translate((-fxo,+fyo,0)))  # jamb front right
+        #frame = frame.union(jamb_corner.rotateAboutCenter((0,0,1),+90).translate((+fxo,-fyo,0)))  # jamb back  left
+        #frame = frame.union(jamb_corner.rotateAboutCenter((0,0,1),0).translate((-fxo,-fyo,0)))    # jamb back  right
+        #frame = frame.union(ledger_rib.translate((0,0,+fzo)))                                     # ledger rib middle
+        #frame = frame.union(ledger_rib.translate((+fxo,0,+fzo)))                                  # ledger rib left
+        #frame = frame.union(ledger_rib.translate((-fxo,0,+fzo)))                                  # ledger rib right
+        #frame = frame.union(stringer_rib.translate((frxo,+fyo,+fzo)))                                      # stringer rib front left
+
+        #show_object(frame,name="frame",options={"alpha":0.2,"color":(255,170,0)})
 
         #ToDo: add new parts
         stringer_moved = stringer.translate((600,0,250))
@@ -186,48 +208,6 @@ class SimpleBed:
         parts = jamb.union(stringer_moved).union(ledger_moved).union(batten_moved)
         #show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
 
-        zo = 0.5*(self.measures["stringer.height"]+self.measures["batten.height"])
-        yo = 0.5*(self.measures["mattress.width"]-self.measures["stringer.width"])
-        xo = 0.5*(self.measures["stringer.length"]-self.measures["batten.width.2"])
-        skew = self.measures["batten.width.2"]+self.measures["batten.gap"]
-        lift = 0.5*self.measures["stringer.height"]+self.measures["jamb.length"]
-        stringer_front = stringer.translate((0,+yo,0))
-        stringer_back  = stringer.translate((0,-yo,0))
-        ledger_left    = ledger.translate((-xo,0,0))
-        ledger_right   = ledger.translate((+xo,0,0))
-        duckboard = stringer_front.union(stringer_back)
-        duckboard = duckboard.union(ledger_left)
-        duckboard = duckboard.union(ledger_right)
-        duckboard = duckboard.union(batten_3.translate((0,0,zo)))        # middle
-        duckboard = duckboard.union(batten_3.translate((-xo,0,zo)))      # left most
-        duckboard = duckboard.union(batten_3.translate((+xo,0,zo)))      # right most
-        duckboard = duckboard.union(batten_3.translate((-1*skew,0,zo)))  # 1 skew left
-        duckboard = duckboard.union(batten_3.translate((+1*skew,0,zo)))  # 1 skew right
-        duckboard = duckboard.union(batten_3.translate((-2*skew,0,zo)))  # 2 skew left
-        duckboard = duckboard.union(batten_3.translate((+2*skew,0,zo)))  # 2 Skew right
-        duckboard = duckboard.union(batten_3.translate((-3*skew,0,zo)))  # 3 skew left
-        duckboard = duckboard.union(batten_3.translate((+3*skew,0,zo)))  # 3 skew right
-        duckboard = duckboard.translate((0,0,lift))
-        #show_object(duckboard,name="duckbboard",options={"alpha":0.2,"color":(255,170,0)})
-
-        uplift = 0.5*self.measures["jamb.length"]
-        half = duckboard
-        half = half.union(jamb.translate((-xo,-yo,uplift)))  # back  left
-        half = half.union(jamb.translate((+xo,-yo,uplift)))  # back  right
-        half = half.union(jamb.translate((-xo,+yo,uplift)))  # front left
-        half = half.union(jamb.translate((+xo,+yo,uplift)))  # front right
-        #show_object(half,name="half",options={"alpha":0.2,"color":(255,170,0)})
-
-        half_stl = half
-        #half_stl = half_stl.rotate((0,0,0),(0,1,0),180).scale(0.1)
-        #show_object(half_stl,name="half_stl",options={"alpha":0.2,"color":(255,170,0)})
-
-        align = 0.5*self.measures["stringer.length"]
-        bed  = half.translate((-align,0,0))
-        bed  = bed.union(half.translate((+align,0,0)))
-        #show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170, 0)})
-
-        self.model = bed
         return
 
     pass

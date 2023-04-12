@@ -128,7 +128,7 @@ class SimpleBed:
         jcd = self.measures["jamb.cut.depth"]
         jca = self.measures["jamb.cut.air"]
         jcx  = js
-        jcy  = 2*(jcw+jca)
+        jcy  = jcw+2*jca
         jcz  = 2*(jcd+jca)
         jc          = cq.Workplane("XY").box(jcx,jcy,jcz).translate((0.5*js,0,0.5*jl))  # cutter
         jamb        = cq.Workplane("XY").box(js,js,jl).faces("<Z or >Z").shell(-jt)     # shell
@@ -146,7 +146,6 @@ class SimpleBed:
         rcw  = self.measures["rib.cut.width"]
         rcd  = self.measures["rib.cut.depth"]
         rca  = self.measures["rib.cut.air"]
-
         rcx  = rcw+2*rca
         rcy  = rcw+2*rca
         rcz  = 2*rw
@@ -154,52 +153,48 @@ class SimpleBed:
         rsxo = 0.5*(rl_2-rcw)-rj
         ryo  = 0.5*(rcy+rt)
         rd   = rcd+rca
-        rlcxpyp      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((+rlxo,+ryo-rd,0))   # ledger cutter x+ y+
-        rlcxpym      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((+rlxo,-ryo+rd,0))   # ledger cutter x+ y-
-        rlcxmyp      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((-rlxo,+ryo-rd,0))   # ledger cutter x- y+
-        rlcxmym      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((-rlxo,-ryo+rd,0))   # ledger cutter x- y-
-        rib_ledger   = cq.Workplane("XY").box(rl_1,rt,rw).translate((0,0,0))              # rib for ledger
-        rib_ledger   = rib_ledger.cut(rlcxpyp)
-        rib_ledger   = rib_ledger.cut(rlcxpym)
-        rib_ledger   = rib_ledger.cut(rlcxmyp)
-        rib_ledger   = rib_ledger.cut(rlcxmym)
-        rscxpyp      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((+rsxo,+ryo-rd,0))   # stringer cutter x+ y+
-        rscxpym      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((+rsxo,-ryo+rd,0))   # stringer cutter x+ y-
-        rscxmyp      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((-rsxo,+ryo-rd,0))   # stringer cutter x- y+
-        rscxmym      = cq.Workplane("XY").box(rcx,rcy,rcz).translate((-rsxo,-ryo+rd,0))   # stringer cutter x- y-
-        rib_stringer = cq.Workplane("XY").box(rl_2,rt,rw).translate((0,0,0))              # rib for stringer
-        rib_stringer = rib_stringer.cut(rscxpyp)
-        rib_stringer = rib_stringer.cut(rscxpym)
-        rib_stringer = rib_stringer.cut(rscxmyp)
-        rib_stringer = rib_stringer.cut(rscxmym)
+        rc           = cq.Workplane("XY").box(rcx,rcy,rcz)                      # cutter
+        rib_ledger   = cq.Workplane("XY").box(rl_1,rt,rw).translate((0,0,0))    # rib for ledger
+        rib_ledger   = rib_ledger.cut(rc.translate((+rlxo,+ryo-rd,0)))          # ledger cutter x+ y+
+        rib_ledger   = rib_ledger.cut(rc.translate((+rlxo,-ryo+rd,0)))          # ledger cutter x+ y-
+        rib_ledger   = rib_ledger.cut(rc.translate((-rlxo,+ryo-rd,0)))          # ledger cutter x- y+
+        rib_ledger   = rib_ledger.cut(rc.translate((-rlxo,-ryo+rd,0)))          # ledger cutter x- y-
+        rib_ledger   = rib_ledger.rotate((0,0,0),(0,0,1),90)
+        rib_stringer = cq.Workplane("XY").box(rl_2,rt,rw).translate((0,0,0))    # rib for stringer
+        rib_stringer = rib_stringer.cut(rc.translate((+rsxo,+ryo-rd,0)))        # stringer cutter x+ y+
+        rib_stringer = rib_stringer.cut(rc.translate((+rsxo,-ryo+rd,0)))        # stringer cutter x+ y-
+        rib_stringer = rib_stringer.cut(rc.translate((-rsxo,+ryo-rd,0)))        # stringer cutter x- y+
+        rib_stringer = rib_stringer.cut(rc.translate((-rsxo,-ryo+rd,0)))        # stringer cutter x- y-
         #show_object(rscxpym,name="cutter",options={"alpha":0.2,"color":(255,170,0)}) 
         #show_object(rib_ledger,name="rib",options={"alpha":0.2,"color":(255,170,0)})   
-        show_object(rib_stringer,name="rib",options={"alpha":0.2,"color":(255,170,0)})
-
-        fsrt = self.measures["rib.thickness"]
-        fsrl = self.measures["rib.length.2"]
-        fsrj = self.measures["@rib.jut"]
+        #show_object(rib_stinger,name="rib",options={"alpha":0.2,"color":(255,170,0)})
+ 
         fsl  = self.measures["stringer.length"]
         fll  = self.measures["ledger.length"]
+        fjt  = self.measures["jamb.thickness"]
         fjs  = self.measures["jamb.side"]
         fjl  = self.measures["jamb.length"]
+        frj  = self.measures["@rib.jut"]
         frw  = self.measures["rib.width"]
+        frl  = self.measures["rib.length.2"]
         fxo  = fsl-0.5*fjs
         fyo  = 0.5*(fll+fjs)
         fzo  = 0.5*(fjl-frw)
-        frxo = 0.5*fsl-fsrt
-        #frame = jamb_middle.translate((0,-fyo,0))                                                 # jamb front middle
-        #frame = frame.union(jamb_middle.rotateAboutCenter((0,0,1),180).translate((0,+fyo,0)))     # jamb back  middle
-        #frame = frame.union(jamb_corner.rotateAboutCenter((0,0,1),180).translate((+fxo,+fyo,0)))  # jamb front left
-        #frame = frame.union(jamb_corner.rotateAboutCenter((0,0,1),-90).translate((-fxo,+fyo,0)))  # jamb front right
-        #frame = frame.union(jamb_corner.rotateAboutCenter((0,0,1),+90).translate((+fxo,-fyo,0)))  # jamb back  left
-        #frame = frame.union(jamb_corner.rotateAboutCenter((0,0,1),0).translate((-fxo,-fyo,0)))    # jamb back  right
-        #frame = frame.union(ledger_rib.translate((0,0,+fzo)))                                     # ledger rib middle
-        #frame = frame.union(ledger_rib.translate((+fxo,0,+fzo)))                                  # ledger rib left
-        #frame = frame.union(ledger_rib.translate((-fxo,0,+fzo)))                                  # ledger rib right
-        #frame = frame.union(stringer_rib.translate((frxo,+fyo,+fzo)))                                      # stringer rib front left
-
-        #show_object(frame,name="frame",options={"alpha":0.2,"color":(255,170,0)})
+        frxo = 0.5*(frl+fjs)-fjt-frj
+        frame = jamb_middle.rotate((0,0,0),(0,0,1),180).translate((0,+fyo,0))                   # jamb front middle
+        frame = frame.union(jamb_corner.rotate((0,0,0),(0,0,1),180).translate((+fxo,+fyo,0)))   # jamb front left
+        frame = frame.union(jamb_corner.rotate((0,0,0),(0,0,1),-90).translate((-fxo,+fyo,0)))   # jamb front right
+        frame = frame.union(jamb_middle.rotate((0,0,0),(0,0,1),0).translate((0,-fyo,0)))        # jamb back  middle
+        frame = frame.union(jamb_corner.rotate((0,0,0),(0,0,1),+90).translate((+fxo,-fyo,0)))   # jamb back  left
+        frame = frame.union(jamb_corner.rotate((0,0,0),(0,0,1),0).translate((-fxo,-fyo,0)))     # jamb back  right
+        frame = frame.union(rib_ledger.translate((0,0,+fzo)))                                   # rib ledger middle
+        frame = frame.union(rib_ledger.translate((+fxo,0,+fzo)))                                # rib ledger left
+        frame = frame.union(rib_ledger.translate((-fxo,0,+fzo)))                                # rib ledger right
+        frame = frame.union(rib_stringer.translate((+frxo,+fyo,+fzo)))                          # rib stringer front left
+        frame = frame.union(rib_stringer.translate((-frxo,+fyo,+fzo)))                          # rib stringer front right
+        frame = frame.union(rib_stringer.translate((+frxo,-fyo,+fzo)))                          # rib stringer back  left
+        frame = frame.union(rib_stringer.translate((-frxo,-fyo,+fzo)))                          # rib stringer back  right
+        show_object(frame,name="frame",options={"alpha":0.2,"color":(255,170,0)})
 
         #ToDo: add new parts
         stringer_moved = stringer.translate((600,0,250))

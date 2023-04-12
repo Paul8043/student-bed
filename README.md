@@ -183,6 +183,6 @@ The duckboard covers only one half the bed. The battens are simply loaded on top
 [ledger](docs/ledger.png)
 [duckboard](docs/duckboard.png)
 
-Both duckboards are loaded on top of the frame and the bed is ready. Mission complete, at least what is related to the design.
+Both duckboards are loaded on top of the frame and the bed is ready. Mission complete, at least related to the design.
 
 [bed](docs/bed.png)

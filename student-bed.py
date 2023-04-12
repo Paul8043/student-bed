@@ -63,7 +63,7 @@ measures["rib.cut.width"]      = measures["@thickness.2"]
 measures["rib.cut.depth"]      = 4.5
 measures["rib.cut.air"]        = 0.2
 
-measures["batten.height"]      = measures["@thickness.1"]
+measures["batten.thickness"]   = measures["@thickness.1"]
 measures["batten.width.1"]     = measures["@width.1"]
 measures["batten.width.2"]     = measures["@width.2"]
 measures["batten.width.3"]     = measures["@width.3"]
@@ -99,28 +99,34 @@ class SimpleBed:
         return
     
     def build(self) -> None:
+
+        # stringer
         st = self.measures["stringer.thickness"]
         sw = self.measures["stringer.width"]
         sl = self.measures["stringer.length"]
         stringer = cq.Workplane("XY").box(sl,sw,st)
         #show_object(stringer,name="stringer",options={"alpha":0.2,"color":(255,170,0)})
 
+        # ledger
         lt = self.measures["ledger.thickness"]
         lw = self.measures["ledger.width"]
         ll = self.measures["ledger.length"]
-        ledger = cq.Workplane("XY").box(lw,ll,lt)
-        #show_object(ledger,name="ledger",options={"alpha":0.2,"color":(255,170,0)})
+        ledger_1 = cq.Workplane("XY").box(0.5*lw,ll,lt)
+        ledger_2 = cq.Workplane("XY").box(lw,ll,lt)
+        #show_object(ledger_2,name="ledger",options={"alpha":0.2,"color":(255,170,0)})
 
-        bh   = self.measures["batten.height"]
+        # batten
+        bt   = self.measures["batten.thickness"]
         bw_1 = self.measures["batten.width.1"]
         bw_2 = self.measures["batten.width.2"]
         bw_3 = self.measures["batten.width.3"]
         bl   = self.measures["batten.length"]
-        batten_1 = cq.Workplane("XY").box(bw_1,bl,bh)     # half  (only for 3D-printing)
-        batten_2 = cq.Workplane("XY").box(bw_2,bl,bh)     # small (middle)
-        batten_3 = cq.Workplane("XY").box(bw_3,bl,bh)     # large (outwards)
-        #show_object(batten_3,name="batten",options={"alpha":0.2,"color":(255,170,0)})
+        batten_1 = cq.Workplane("XY").box(bw_1,bl,bt)     # half  (only for 3D-printing)
+        batten_2 = cq.Workplane("XY").box(bw_2,bl,bt)     # small (middle)
+        batten_3 = cq.Workplane("XY").box(bw_3,bl,bt)     # large (outwards)
+        #show_object(batten_2,name="batten",options={"alpha":0.2,"color":(255,170,0)})
 
+        # jamb
         jt  = self.measures["jamb.thickness"]
         js  = self.measures["jamb.side"]
         jl  = self.measures["jamb.length"]
@@ -138,6 +144,7 @@ class SimpleBed:
         #show_object(jc,name="cutter",options={"alpha":0.2,"color":(255,170,0)})    
         #show_object(jamb_middle,name="jamb",options={"alpha":0.2,"color":(255,170,0)})
 
+        # rib
         rt   = self.measures["rib.thickness"]
         rw   = self.measures["rib.width"]
         rl_1 = self.measures["rib.length.1"]
@@ -167,8 +174,9 @@ class SimpleBed:
         rib_stringer = rib_stringer.cut(rc.translate((-rsxo,-ryo+rd,0)))        # stringer cutter x- y-
         #show_object(rscxpym,name="cutter",options={"alpha":0.2,"color":(255,170,0)}) 
         #show_object(rib_ledger,name="rib",options={"alpha":0.2,"color":(255,170,0)})   
-        #show_object(rib_stinger,name="rib",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(rib_stringer,name="rib",options={"alpha":0.2,"color":(255,170,0)})
  
+        # frame
         fsl  = self.measures["stringer.length"]
         fll  = self.measures["ledger.length"]
         fjt  = self.measures["jamb.thickness"]
@@ -194,15 +202,56 @@ class SimpleBed:
         frame = frame.union(rib_stringer.translate((-frxo,+fyo,+fzo)))                          # rib stringer front right
         frame = frame.union(rib_stringer.translate((+frxo,-fyo,+fzo)))                          # rib stringer back  left
         frame = frame.union(rib_stringer.translate((-frxo,-fyo,+fzo)))                          # rib stringer back  right
-        show_object(frame,name="frame",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(frame,name="frame",options={"alpha":0.2,"color":(255,170,0)})
+
+        # duckboard
+        dst  = self.measures["stringer.thickness"]
+        dsl  = self.measures["stringer.length"]
+        dlt  = self.measures["ledger.thickness"]
+        dlw  = self.measures["ledger.width"]
+        dll  = self.measures["ledger.length"]
+        dbt  = self.measures["batten.thickness"]
+        dbw1 = self.measures["batten.width.1"]
+        dbw2 = self.measures["batten.width.2"]
+        dbw3 = self.measures["batten.width.3"]
+        dbg  = self.measures["batten.gap"]
+        dbe  = self.measures["batten.extra"]
+        djs  = self.measures["jamb.side"]
+        dxo  = 0.5*(dsl-djs)
+        dyo  = 0.5*(dll+djs)
+        dzo  = 0.5*(dst+dbt)
+        duckboard = stringer.translate((0,dyo,0))                                # stringer front
+        duckboard = duckboard.union(stringer.translate((0,-dyo,0)))              # stringer back
+        duckboard = duckboard.union(ledger_2.translate((+dxo,0,0)))              # ledger   right
+        duckboard = duckboard.union(ledger_1.translate((-dxo-0.25*dlw,0,0)))     # ledger   left
+        duckboard = duckboard.union(batten_3.translate((+dxo,0,dzo)))            # batten   right
+        duckboard = duckboard.union(batten_1.translate((-dxo-0.25*dlw,0,dzo)))   # batten   left
+        xo = -0.5*dsl+dbw1+dbe+dbg+0.5*dbw2
+        for i in range(5):
+            duckboard = duckboard.union(batten_2.translate((xo,0,dzo)))          # batten   middle
+            xo = xo+dbw2+dbg
+        #show_object(duckboard,name="duckboard",options={"alpha":0.2,"color":(255,170,0)})
 
         #ToDo: add new parts
         stringer_moved = stringer.translate((600,0,250))
-        ledger_moved   = ledger.translate((0,500,250))
+        ledger_moved   = ledger_2.translate((0,500,250))
         batten_moved   = batten_3.translate((0,500,350))
         parts = jamb.union(stringer_moved).union(ledger_moved).union(batten_moved)
         #show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
 
+        # bed
+        bjl  = self.measures["jamb.length"]
+        bst  = self.measures["stringer.thickness"]
+        bsl  = self.measures["stringer.length"]
+        bxo  = 0.5*bsl
+        bzo1  = 0.5*bjl
+        bzo2  = bjl+0.5*bst
+        bed = frame.translate((0,0,bzo1))                                                # frame
+        bed = bed.union(duckboard.translate((bxo,0,bzo2)))                               # half right
+        bed = bed.union(duckboard.rotate((0,0,0),(0,0,1),180).translate((-bxo,0,bzo2)))  # half left
+        show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170,0)})
+
+        self.model = bed
         return
 
     pass

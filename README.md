@@ -168,14 +168,21 @@ The design is kept simple. The duckboard is split into 2 halves (not visible at 
 
 [parts](docs/parts.png)
 
-All battens are loaded on top of the stringers and ledgers.
+A jamb has a hollow body. The ribs can be plugged into the slots of the jamb.
 
+[jamb](docs/jamb.png)
+[rib](docs/rib.png)
+
+The frame is built with 6 jambs and 7 ribs.
+
+[frame](docs/frame.png)
+
+The duckboard covers only one half the bed. The battens are simply loaded on top of the stringers and ledgers.
+
+[stringer](docs/stringer.png)
+[ledger](docs/ledger.png)
 [duckboard](docs/duckboard.png)
 
-Putting a jamb below each corner and the half bed is ready.
-
-[half](docs/half.png)
-
-And both halves together make the complete bed.
+Both duckboards are loaded on top of the frame and the bed is ready. Mission complete, at least what is related to the design.
 
 [bed](docs/bed.png)

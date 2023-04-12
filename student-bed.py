@@ -232,13 +232,6 @@ class SimpleBed:
             xo = xo+dbw2+dbg
         #show_object(duckboard,name="duckboard",options={"alpha":0.2,"color":(255,170,0)})
 
-        #ToDo: add new parts
-        stringer_moved = stringer.translate((600,0,250))
-        ledger_moved   = ledger_2.translate((0,500,250))
-        batten_moved   = batten_3.translate((0,500,350))
-        parts = jamb.union(stringer_moved).union(ledger_moved).union(batten_moved)
-        #show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
-
         # bed
         bjl  = self.measures["jamb.length"]
         bst  = self.measures["stringer.thickness"]
@@ -249,7 +242,16 @@ class SimpleBed:
         bed = frame.translate((0,0,bzo1))                                                # frame
         bed = bed.union(duckboard.translate((bxo,0,bzo2)))                               # half right
         bed = bed.union(duckboard.rotate((0,0,0),(0,0,1),180).translate((-bxo,0,bzo2)))  # half left
-        show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(bed,name="bed",options={"alpha":0.2,"color":(255,170,0)})
+
+        # parts
+        jamb_moved     = jamb_corner.translate((0,0,0))
+        rib_moved      = rib_stringer.translate((600,0,180))
+        stringer_moved = stringer.translate((600,0,270))
+        ledger_moved   = ledger_2.translate((0,500,270))
+        batten_moved   = batten_3.translate((200,500,350))
+        parts = jamb_moved.union(rib_moved).union(stringer_moved).union(ledger_moved).union(batten_moved)
+        show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
 
         self.model = bed
         return

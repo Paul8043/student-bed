@@ -262,13 +262,16 @@ class SimpleBed:
         batch_1 = batch_1.union(jamb_middle.translate((200,200,0)))
         batch_1 = batch_1.union(jamb_corner.translate((400,200,0)))
 
-        batch_2 = rib_stringer.translate((0,0,0))
-        batch_2 = batch_2.union(rib_stringer.translate((0,100,0)))
-        batch_2 = batch_2.union(rib_stringer.translate((0,200,0)))
-        batch_2 = batch_2.union(rib_stringer.translate((0,300,0)))
-        batch_2 = batch_2.union(rib_ledger.rotate((0,0,0),(0,0,1),90).translate((0,400,0)))
-        batch_2 = batch_2.union(rib_ledger.rotate((0,0,0),(0,0,1),90).translate((0,500,0)))
-        batch_2 = batch_2.union(rib_ledger.rotate((0,0,0),(0,0,1),90).translate((0,600,0)))
+        stringer_flat = rib_stringer.rotate((1,0,0),(0,0,0),90)
+        ledger_flat   = rib_ledger.rotate((0,0,0),(0,0,1),90).rotate((1,0,0),(0,0,0),90)
+        #show_object(ledger_flat,name="stringer",options={"alpha":0.2,"color":(255,170,0)})
+        batch_2 = stringer_flat.translate((0,0,0))
+        batch_2 = batch_2.union(stringer_flat.translate((0,150,0)))
+        batch_2 = batch_2.union(stringer_flat.translate((0,300,0)))
+        batch_2 = batch_2.union(stringer_flat.translate((0,450,0)))
+        batch_2 = batch_2.union(ledger_flat.translate((0,600,0)))
+        batch_2 = batch_2.union(ledger_flat.translate((0,750,0)))
+        batch_2 = batch_2.union(ledger_flat.translate((0,900,0)))
 
         batch_3 = duckboard.rotate((0,0,0),(0,1,0),180)
 
@@ -276,7 +279,7 @@ class SimpleBed:
         exporters.export(batch_2, 'docs/batch_2.stl', exporters.ExportTypes.STL)
         exporters.export(batch_3, 'docs/batch_3.stl', exporters.ExportTypes.STL)
 
-        show_object(batch_3,name="batch_1",options={"alpha":0.2,"color":(255,170,0)})
+        show_object(batch_2,name="batch_1",options={"alpha":0.2,"color":(255,170,0)})
 
         self.model = bed
         return

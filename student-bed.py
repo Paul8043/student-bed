@@ -3,6 +3,7 @@
 """
 
 import cadquery as cq
+from cadquery import exporters
 
 # some stubs to make the script ready for VS-Code and cq-editor
 
@@ -251,7 +252,31 @@ class SimpleBed:
         ledger_moved   = ledger_2.translate((0,500,270))
         batten_moved   = batten_3.translate((200,500,350))
         parts = jamb_moved.union(rib_moved).union(stringer_moved).union(ledger_moved).union(batten_moved)
-        show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(parts,name="parts",options={"alpha":0.2,"color":(255,170,0)})
+
+        # 3D-Printing
+        batch_1 = jamb_corner.translate((0,0,0))
+        batch_1 = batch_1.union(jamb_middle.translate((200,0,0)))
+        batch_1 = batch_1.union(jamb_corner.translate((400,0,0)))
+        batch_1 = batch_1.union(jamb_corner.translate((0,200,0)))
+        batch_1 = batch_1.union(jamb_middle.translate((200,200,0)))
+        batch_1 = batch_1.union(jamb_corner.translate((400,200,0)))
+
+        batch_2 = rib_stringer.translate((0,0,0))
+        batch_2 = batch_2.union(rib_stringer.translate((0,100,0)))
+        batch_2 = batch_2.union(rib_stringer.translate((0,200,0)))
+        batch_2 = batch_2.union(rib_stringer.translate((0,300,0)))
+        batch_2 = batch_2.union(rib_ledger.rotate((0,0,0),(0,0,1),90).translate((0,400,0)))
+        batch_2 = batch_2.union(rib_ledger.rotate((0,0,0),(0,0,1),90).translate((0,500,0)))
+        batch_2 = batch_2.union(rib_ledger.rotate((0,0,0),(0,0,1),90).translate((0,600,0)))
+
+        batch_3 = duckboard.rotate((0,0,0),(0,1,0),180)
+
+        exporters.export(batch_1, 'docs/batch_1.stl', exporters.ExportTypes.STL)
+        exporters.export(batch_2, 'docs/batch_2.stl', exporters.ExportTypes.STL)
+        exporters.export(batch_3, 'docs/batch_3.stl', exporters.ExportTypes.STL)
+
+        show_object(batch_3,name="batch_1",options={"alpha":0.2,"color":(255,170,0)})
 
         self.model = bed
         return

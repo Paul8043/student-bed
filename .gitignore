@@ -1,4 +1,9 @@
 # Byte-compiled / optimized / DLL files
+
+# 3D-Printing
+*.stl
+*.gcode
+
 __pycache__/
 *.py[cod]
 *$py.class

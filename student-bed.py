@@ -32,7 +32,7 @@ measures ={
     "@thickness.1":18,
     "@thickness.2":27,
     "@side.length":120,
-    "@rib.jut":15,
+    "@rib.jut":16,
     "mattress.height":180,
     "mattress.width":900,
     "mattress.length":2100,
@@ -62,7 +62,7 @@ measures["rib.length.1"]       = measures["ledger.length"]+2*(measures["@thickne
 measures["rib.length.2"]       = measures["stringer.length"]-1.5*measures["@side.length"]+2*(measures["@thickness.2"]+measures["@rib.jut"])
 measures["rib.cut.width"]      = measures["@thickness.2"]
 measures["rib.cut.depth"]      = 4.5
-measures["rib.cut.air"]        = 0.2
+measures["rib.cut.air"]        = 0.6
 
 measures["batten.thickness"]   = measures["@thickness.1"]
 measures["batten.width.1"]     = measures["@width.1"]
@@ -78,7 +78,7 @@ measures["jamb.side"]       = measures["@side.length"]
 measures["jamb.length"]     = measures["mattress.altitude"]-measures["@thickness.1"]-measures["@thickness.2"]
 measures["jamb.cut.width"]  = measures["@thickness.1"]
 measures["jamb.cut.depth"]  = measures["@width.2"]
-measures["jamb.cut.air"]    = 0.2
+measures["jamb.cut.air"]    = 0.6
 
 # model class
 
@@ -134,7 +134,7 @@ class SimpleBed:
         jcw = self.measures["jamb.cut.width"]
         jcd = self.measures["jamb.cut.depth"]
         jca = self.measures["jamb.cut.air"]
-        jcx  = js
+        jcx  = js+2*jca
         jcy  = jcw+2*jca
         jcz  = 2*(jcd+jca)
         jc          = cq.Workplane("XY").box(jcx,jcy,jcz).translate((0.5*js,0,0.5*jl))  # cutter

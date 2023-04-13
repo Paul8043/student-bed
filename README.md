@@ -2,7 +2,7 @@
 
 # Student-Bed
 
-![appetizer](docs/bed.png)
+![appetizer](docs/prototyp.jpg)
 
 # Preamble
 
@@ -166,7 +166,7 @@ The design is kept simple. The duckboard is split into 2 halves (not visible at 
 * ledgers
 * battens
 
-[parts](docs/parts.png)
+[parts-piled-up](docs/bed-piled-up.jpg)
 
 A jamb has a hollow body. The ribs can be plugged into the slots of the jamb.
 
@@ -186,3 +186,17 @@ The duckboard covers only one half the bed. The battens are simply loaded on top
 Both duckboards are loaded on top of the frame and the bed is ready. Mission complete, at least related to the design.
 
 [bed](docs/bed.png)
+
+# Mile-Stone #9: Prototyp
+
+CAD-Model are great, but the real thing is better. Why not print the model with a 3D-Printer? The jambs can be printed in their original orientation. The ribs are flipped by 90 degrees and the duckboards are printed upside-down.
+
+Simply, puzzle the parts together and the prototype is ready.
+
+[prototype](docs/prototyp.jpg)
+
+# Mile-Stone #10: Storage Check
+
+The bed is demountable. Just open the screws on top of the jambs. All parts can be stacked together. They fit easily in the stoarage area, specified in the [EMS](docs/EMS.txt)).
+
+[parts-stacked](docs/bed-stacked.jpg)

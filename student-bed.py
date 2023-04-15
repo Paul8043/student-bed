@@ -62,7 +62,7 @@ measures["rib.length.1"]       = measures["ledger.length"]+2*(measures["@thickne
 measures["rib.length.2"]       = measures["stringer.length"]-1.5*measures["@side.length"]+2*(measures["@thickness.2"]+measures["@rib.jut"])
 measures["rib.cut.width"]      = measures["@thickness.2"]
 measures["rib.cut.depth"]      = 4.5
-measures["rib.cut.air"]        = 0.6
+measures["rib.cut.air"]        = 0
 
 measures["batten.thickness"]   = measures["@thickness.1"]
 measures["batten.width.1"]     = measures["@width.1"]
@@ -73,12 +73,12 @@ measures["batten.gap"]         = 78
 measures["batten.extra"]       = (measures["stringer.length"]-measures["batten.width.3"]
 -5*measures["batten.width.2"]-6*measures["batten.gap"]-measures["batten.width.1"])/2
 
-measures["jamb.thickness"]  = measures["@thickness.2"]
+measures["jamb.thickness"]  = measures["@thickness.2"]-2.5   # for 3D-printing
 measures["jamb.side"]       = measures["@side.length"]
 measures["jamb.length"]     = measures["mattress.altitude"]-measures["@thickness.1"]-measures["@thickness.2"]
 measures["jamb.cut.width"]  = measures["@thickness.1"]
 measures["jamb.cut.depth"]  = measures["@width.2"]
-measures["jamb.cut.air"]    = 0.6
+measures["jamb.cut.air"]    = 1.3                            # for 3D-printing
 
 # model class
 
@@ -137,6 +137,7 @@ class SimpleBed:
         jcx  = js+2*jca
         jcy  = jcw+2*jca
         jcz  = 2*(jcd+jca)
+        #echo(f"jamb-cutter:{jcx},{jcy},{jcz}")
         jc          = cq.Workplane("XY").box(jcx,jcy,jcz).translate((0.5*js,0,0.5*jl))  # cutter
         jamb        = cq.Workplane("XY").box(js,js,jl).faces("<Z or >Z").shell(-jt)     # shell
         jamb_corner = jamb.cut(jc.rotate((0,0,0),(0,0,1),0))                            # cut x+
@@ -161,6 +162,8 @@ class SimpleBed:
         rsxo = 0.5*(rl_2-rcw)-rj
         ryo  = 0.5*(rcy+rt)
         rd   = rcd+rca
+        #echo(f"rib-cutter:{rcx},{rcy},{rcz}")
+        #echo(f"rd:{rd}")
         rc           = cq.Workplane("XY").box(rcx,rcy,rcz)                      # cutter
         rib_ledger   = cq.Workplane("XY").box(rl_1,rt,rw).translate((0,0,0))    # rib for ledger
         rib_ledger   = rib_ledger.cut(rc.translate((+rlxo,+ryo-rd,0)))          # ledger cutter x+ y+
@@ -173,8 +176,8 @@ class SimpleBed:
         rib_stringer = rib_stringer.cut(rc.translate((+rsxo,-ryo+rd,0)))        # stringer cutter x+ y-
         rib_stringer = rib_stringer.cut(rc.translate((-rsxo,+ryo-rd,0)))        # stringer cutter x- y+
         rib_stringer = rib_stringer.cut(rc.translate((-rsxo,-ryo+rd,0)))        # stringer cutter x- y-
-        #show_object(rscxpym,name="cutter",options={"alpha":0.2,"color":(255,170,0)}) 
-        #show_object(rib_ledger,name="rib",options={"alpha":0.2,"color":(255,170,0)})   
+        #show_object(rc,name="cutter",options={"alpha":0.2,"color":(255,170,0)}) 
+        show_object(rib_ledger,name="rib",options={"alpha":0.2,"color":(255,170,0)})   
         #show_object(rib_stringer,name="rib",options={"alpha":0.2,"color":(255,170,0)})
  
         # frame
@@ -279,7 +282,7 @@ class SimpleBed:
         exporters.export(batch_2, 'docs/batch_2.stl', exporters.ExportTypes.STL)
         exporters.export(batch_3, 'docs/batch_3.stl', exporters.ExportTypes.STL)
 
-        show_object(batch_2,name="batch_1",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(batch_2,name="batch_1",options={"alpha":0.2,"color":(255,170,0)})
 
         self.model = bed
         return

@@ -200,3 +200,7 @@ Simply, puzzle the parts together and the prototype is ready.
 The bed is demountable. Just open the screws on top of the jambs. All parts can be stacked together. They fit easily in the stoarage area, specified in the [EMS](docs/EMS.txt)).
 
 [parts-stacked](docs/bed-stacked.jpg)
+
+# Mile-Stone #11: Bill Of Material
+
+It is time to order material. The complete list given as CSV-File, see [bom](docs/bom.csv)

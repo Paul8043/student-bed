@@ -73,12 +73,12 @@ measures["batten.gap"]         = 78
 measures["batten.extra"]       = (measures["stringer.length"]-measures["batten.width.3"]
 -5*measures["batten.width.2"]-6*measures["batten.gap"]-measures["batten.width.1"])/2
 
-measures["jamb.thickness"]  = measures["@thickness.2"]-2.5   # for 3D-printing
+measures["jamb.thickness"]  = measures["@thickness.2"]      # -2.5  for 3D-printing
 measures["jamb.side"]       = measures["@side.length"]
 measures["jamb.length"]     = measures["mattress.altitude"]-measures["@thickness.1"]-measures["@thickness.2"]
 measures["jamb.cut.width"]  = measures["@thickness.1"]
 measures["jamb.cut.depth"]  = measures["@width.2"]
-measures["jamb.cut.air"]    = 1.3                            # for 3D-printing
+measures["jamb.cut.air"]    = 0                             # 1.3  for 3D-printing
 
 # model class
 
@@ -88,7 +88,50 @@ class SimpleBed:
         self.model     = None
         self.measures  = measures
         self.dump()
+        self.bom()
         self.build()
+        return
+    
+    def bom(self) -> None:
+        jl   = self.measures["jamb.length"]
+        js   = self.measures["jamb.side"]
+        jt   = self.measures["jamb.thickness"]
+        rl_1 = self.measures["rib.length.1"]
+        rl_2 = self.measures["rib.length.2"]
+        rw   = self.measures["rib.width"]
+        rt   = self.measures["rib.thickness"]
+        sl   = self.measures["stringer.length"]
+        sw   = self.measures["stringer.width"]
+        st   = self.measures["stringer.thickness"]
+        ll   = self.measures["ledger.length"]
+        lw   = self.measures["ledger.width"]
+        lt   = self.measures["ledger.thickness"]
+        bl   = self.measures["batten.length"]
+        bw   = self.measures["batten.width.3"]
+        bt   = self.measures["batten.thickness"]
+        jamb_broad  = f"12,'JB','jamb broad','beech','{jl} x {js} x {jt}',,'diy-store'\n"
+        jamb_small  = f"12,'JS','jamb small','beech','{jl} x {js-2*jt} x {jt}',,'diy-store'\n"
+        rib_long    = f"4,'RL','rib long','beech','{rl_2} x {rw} x {rt}',,'diy-store'\n"
+        rib_short   = f"3,'RS','rib short','beech','{rl_1} x {rw} x {rt}',,'diy-store\n"
+        stringer    = f"4,'S','stringer','beech','{sl} x {sw} x {st}',,'diy-store'\n"
+        ledger      = f"3,'L','ledger','beech','{ll} x {lw} x {lt}',,'diy-store'\n"
+        batten      = f"11,'B','batten','beech','{bl} x {bw} x {bt}',,'diy-store'\n"
+        screw_long  = f"24,'SL','screw long','steel A2','M6 x 65','1102706065','www.frantos.com'\n"
+        screw_short = f"50,'SS','screw short','steel A2','M6 x 35','1102706035','www.frantos.com'\n"
+        insert      = f"74,'I','insert SKD330','steel zinc plated','M6 x 18','420618001','www.rampa.com'\n"
+        with open("docs/bom.csv", "w", encoding="ascii") as f:
+            header =f"QTY,REF-DSG,NAME,MATERIAL,DIMENSIONS,MPN,URL\n"
+            f.write(header)
+            f.write(jamb_broad)
+            f.write(jamb_small)
+            f.write(rib_long)
+            f.write(rib_short)
+            f.write(stringer)
+            f.write(ledger)
+            f.write(batten)
+            f.write(screw_long)
+            f.write(screw_short)
+            f.write(insert)
         return
     
     def dump(self) -> None:

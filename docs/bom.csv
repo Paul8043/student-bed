@@ -1,0 +1,11 @@
+QTY,REF-DSG,NAME,MATERIAL,DIMENSIONS,MPN,URL
+12,'JB','jamb broad','beech','420 x 120 x 27',,'diy-store'
+12,'JS','jamb small','beech','420 x 66 x 27',,'diy-store'
+4,'RL','rib long','beech','956.0 x 80.0 x 27',,'diy-store'
+3,'RS','rib short','beech','746 x 80.0 x 27',,'diy-store
+4,'S','stringer','beech','1050.0 x 120 x 27',,'diy-store'
+3,'L','ledger','beech','660 x 120 x 27',,'diy-store'
+11,'B','batten','beech','900 x 120 x 18',,'diy-store'
+24,'SL','screw long','steel A2','M6 x 65','1102706065','www.frantos.com'
+50,'SS','screw short','steel A2','M6 x 35','1102706035','www.frantos.com'
+74,'I','insert SKD330','steel zinc plated','M6 x 18','420618001','www.rampa.com'

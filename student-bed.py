@@ -340,12 +340,17 @@ class SimpleBed:
         jt  = self.measures["jamb.thickness"]
         jcw = self.measures["jamb.cut.width"]
         jcd = self.measures["jamb.cut.depth"]
-        s1 = cq.Sketch().rect(10+jl+10,10+js+10).vertices().fillet(50)
-        s2 = cq.Sketch().rect(jl,js)
-        s3 = cq.Sketch().rect(jcd,jcw)
-        jamb_broad = cq.Workplane("XY").placeSketch(s1,s2).extrude(1)
-        #show_object(jamb_broad_outer,name="jamb_broad",options={"alpha":0.2,"color":(255,170,0)})
-        #show_object(jamb_broad_inner,name="jamb_broad",options={"alpha":0.2,"color":(255,170,0)})
+        xo = 0.5*(jl-jcd)+2.5
+        jamb_outer = cq.Workplane("XY").rect(10+jl+10,10+js+10)            # outer
+        jamb_inner = cq.Workplane("XY").rect(jl,js)                        # inner
+        jamb_cut   = cq.Workplane("XY").rect(jcd+5,jcw).translate((-xo,0,0))   # cut
+        #show_object(jamb_outer,name="jamb_outer",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(jamb_inner,name="jamb_inner",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(jamb_cut,name="jamb_cut",options={"alpha":0.2,"color":(255,170,0)})
+        jamb_broad = cq.Assembly()
+        jamb_broad = jamb_broad.add(jamb_outer)
+        jamb_broad = jamb_broad.add(jamb_inner)
+        jamb_broad = jamb_broad.add(jamb_cut)
         show_object(jamb_broad,name="jamb_broad",options={"alpha":0.2,"color":(255,170,0)})
         return
     

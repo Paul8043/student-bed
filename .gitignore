@@ -3,6 +3,7 @@
 # 3D-Printing
 *.stl
 *.gcode
+*.pmdx
 
 __pycache__/
 *.py[cod]

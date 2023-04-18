@@ -283,9 +283,9 @@ class SimpleBed:
 
         batch_3 = duckboard.rotate((0,0,0),(0,1,0),180)
 
-        exporters.export(batch_1, 'docs/batch_1.stl', exporters.ExportTypes.STL)
-        exporters.export(batch_2, 'docs/batch_2.stl', exporters.ExportTypes.STL)
-        exporters.export(batch_3, 'docs/batch_3.stl', exporters.ExportTypes.STL)
+        exporters.export(batch_1.val().scale(0.1), 'docs/batch_1.stl', exporters.ExportTypes.STL)
+        exporters.export(batch_2.val().scale(0.1), 'docs/batch_2.stl', exporters.ExportTypes.STL)
+        exporters.export(batch_3.val().scale(0.1), 'docs/batch_3.stl', exporters.ExportTypes.STL)
 
         #show_object(batch_2,name="batch_1",options={"alpha":0.2,"color":(255,170,0)})
 

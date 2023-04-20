@@ -2,6 +2,7 @@
 @author: Paul8043
 """
 
+from collections import namedtuple
 import cadquery as cq
 from cadquery import exporters
 
@@ -26,6 +27,8 @@ def echo(message) -> None:
     print(message)
     return
 
+DrillHole = namedtuple("DrillHole", "diameter depth")
+
 # all measures are in mm
 
 measures ={
@@ -39,7 +42,8 @@ measures ={
     "mattress.altitude":465,
     "storage.height":260,
     "storage.width":900,
-    "storage.length":1310
+    "storage.length":1310,
+    "rampa.m6":DrillHole(diameter=10.5,depth=18+1),
 }
 
 # derived measures
@@ -340,31 +344,102 @@ class SimpleBed:
         jt  = self.measures["jamb.thickness"]
         jcw = self.measures["jamb.cut.width"]
         jcd = self.measures["jamb.cut.depth"]
-        xo = 0.5*(jl-jcd)+2.5
-        jamb_outer  = cq.Workplane("XY").rect(10+jl+10,10+js+10)                # outer
-        jamb_inner  = cq.Workplane("XY").rect(jl,js)                            # inner
-        jamb_cutout = cq.Workplane("XY").rect(jcd+5,jcw).translate((-xo,0,0))   # cutout
-        #show_object(jamb_outer,name="jamb_outer",options={"alpha":0.2,"color":(255,170,0)})
-        #show_object(jamb_inner,name="jamb_inner",options={"alpha":0.2,"color":(255,170,0)})
-        #show_object(jamb_cutout,name="jamb_cutout",options={"alpha":0.2,"color":(255,170,0)})
-        jamb_broad = cq.Assembly()
-        jamb_broad.add(jamb_outer,name="outer",color=cq.Color("blue"))
-        jamb_broad.add(jamb_inner,name="inner",color=cq.Color("black"))
-        jamb_broad.add(jamb_cutout,name="cutout",color=cq.Color("red"))
+        cl  = jcd+5
+        xo = 0.5*(jl-cl)
+        outer   = cq.Workplane("XY").box(jl+20,js+20,2)                         # outer
+        inner   = cq.Workplane("XY").box(jl,js,4)                               # inner
+        cutout2 = cq.Workplane("XY").box(jcd+5,jcw+2,6).translate((-xo-6,0,0))  # cutout2
+        cutout1 = cq.Workplane("XY").box(jcd+5,jcw,6).translate((-xo-5,0,0))    # cutout1
+        jamb_broad = outer.cut(inner).cut(cutout2)
+        jamb_broad = jamb_broad.union(cutout1)
+        jamb_broad = jamb_broad.section(0)
+        #show_object(outer,name="outer",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(inner,name="inner",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(cutout2,name="cutout2",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(cutout1,name="cutout1",options={"alpha":0.2,"color":(255,170,0)})
         #show_object(jamb_broad,name="jamb_broad",options={"alpha":0.2,"color":(255,170,0)})
-        show_object(jamb_broad,name="jamb_broad",options={"alpha":0.2,"color":(255,170,0)})
-
-        #exporters.export(jamb_broad,"docs/object.dxf",opt={"doc_units":4})
-
+        exporters.exportDXF(jamb_broad,"docs/jamb_broad.dxf")
         return
     
     def jamb_small(self) -> None:
+        jl  = self.measures["jamb.length"]
+        js  = self.measures["jamb.side"]
+        jt  = self.measures["jamb.thickness"]
+        jcw = self.measures["jamb.cut.width"]
+        jcd = self.measures["jamb.cut.depth"]
+        js  = js-2*jt
+        cl  = jcd+5
+        xo = 0.5*(jl-cl)
+        outer   = cq.Workplane("XY").box(jl+20,js+20,2)                         # outer
+        inner   = cq.Workplane("XY").box(jl,js,4)                               # inner
+        cutout2 = cq.Workplane("XY").box(jcd+5,jcw+2,6).translate((-xo-6,0,0))  # cutout2
+        cutout1 = cq.Workplane("XY").box(jcd+5,jcw,6).translate((-xo-5,0,0))    # cutout1
+        jamb_small = outer.cut(inner).cut(cutout2)
+        jamb_small = jamb_small.union(cutout1)
+        jamb_small = jamb_small.section(0)
+        #show_object(outer,name="outer",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(inner,name="inner",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(cutout2,name="cutout2",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(cutout1,name="cutout1",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(jamb_small,name="jamb_small",options={"alpha":0.2,"color":(255,170,0)})
+        exporters.exportDXF(jamb_small,"docs/jamb_small.dxf")
         return
 
     def jamb_jig(self) -> None:
+        jl  = self.measures["jamb.length"]
+        js  = self.measures["jamb.side"]
+        jt  = self.measures["jamb.thickness"]
+        jcw = self.measures["jamb.cut.width"]
+        jcd = self.measures["jamb.cut.depth"]
+        js3 = js+120
+        js2 = js
+        js1 = js-2*jt
+        dh  = self.measures["rampa.m6"]
+        r1  = 0.5*10
+        r2  = 0.5*dh.diameter
+        xo  = 30
+        yo  = 0.5*(js-jt)
+        zo  = 0.5*(jt+6+8)-6
+        pts = [(-xo,-yo),(-xo,+yo),(+xo,-yo),(+xo,+yo)]
+        outer    = cq.Workplane("XY").box(js3,js3,jt+6)                        # outer
+        outer    = outer.faces(">Z").rect(js2,js2,forConstruction=True)        # helper
+        outer    = outer.vertices().circle(r1).cutThruAll()                    # corner-holes
+        outer    = outer.faces(">Z").rect(js2,js2).cutThruAll()                # jamb outside
+        inner    = cq.Workplane("XY").box(js1,js1,jt+6)                        # jamb inside (air)
+        jamb_jig = outer.union(inner)
+        jamb_jig = jamb_jig.pushPoints(pts).circle(r2).extrude(jt+6,both=True) # rampa-holes
+        jamb_jig = jamb_jig.section(0)
+        #show_object(outer,name="outer",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(inner,name="inner",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(jamb_jig,name="jamb_jig",options={"alpha":0.2,"color":(255,170,0)})
+        exporters.exportDXF(jamb_jig,"docs/jamb_jig.dxf")
         return
 
     def rib_short(self) -> None:
+        rl  = self.measures["rib.length.1"]
+        rw  = self.measures["rib.width"]
+        rt  = self.measures["rib.thickness"]
+        rj  = self.measures["@rib.jut"]
+        rcw = self.measures["rib.cut.width"]
+        rcd = self.measures["rib.cut.depth"]
+        xo = 0.5*(rl-rcw)-rj
+        outer     = cq.Workplane("XY").box(rl+20,rw+20,2)     # outer
+        inner     = cq.Workplane("XY").box(rl,rw,rt+4)        # inner
+        cutout2   = cq.Workplane("XY").box(rcw+2,rw+12,6)     # cutout2
+        cutout1   = cq.Workplane("XY").box(rcw,rw+10,10)      # cutout1
+        rib_short = outer
+        rib_short = rib_short.cut(inner)
+        rib_short = rib_short.cut(cutout2.translate((-xo,0,0)))
+        rib_short = rib_short.cut(cutout2.translate((+xo,0,0)))
+        rib_short = rib_short.union(cutout1.translate((-xo,0,0)))
+        rib_short = rib_short.union(cutout1.translate((+xo,0,0)))
+        rib_short = rib_short.section(0)
+        #show_object(outer,name="outer",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(inner,name="inner",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(cutout2,name="cutout2",options={"alpha":0.2,"color":(255,170,0)})
+        #show_object(cutout1,name="cutout1",options={"alpha":0.2,"color":(255,170,0)})
+        show_object(rib_short,name="rib_short",options={"alpha":0.2,"color":(255,170,0)})
+        exporters.exportDXF(rib_short,"docs/rib_short.dxf")
         return    
 
     pass

@@ -367,7 +367,7 @@ class SimpleBed:
         jt  = self.measures["jamb.thickness"]
         jcw = self.measures["jamb.cut.width"]
         jcd = self.measures["jamb.cut.depth"]
-        js  = js-2*jt
+        js  = js-2*jt+0.8
         cl  = jcd+5
         xo = 0.5*(jl-cl)
         outer   = cq.Workplane("XY").box(jl+20,js+20,2)                         # outer

@@ -214,7 +214,7 @@ The generation of SVG-files was more difficult than expected. The original idea 
 2) CadQuery puts a projection of the 3D-model into the SVG-file.
 The projection can be switched off, but the output is scaled to some unknown factor. This ok, if the SVG-file is just used as a viewer, but for my purpose (to control directly the router) this does not fit.
 
-Because of that, the initial idea has been given up. The 2D-drawings are created as additional entities. They are stored in DXF-format. QCAD is used for the post-processing, just set the map scale to 1:1000 and increase the line width to 0.13mm (ISO) and then do an extended SVG-Export
+Because of that, the initial idea has been given up. The 2D-drawings are created as additional entities. They are stored in DXF-format. QCAD is used for the post-processing, close polylines, set the map scale to 1:1000 and increase the line width to 0.13mm (ISO) and then do an extended SVG-Export
 
 In total 4 SVG-Files are needed. The jamb is assembled of 2 broad and 2 small sides.
 

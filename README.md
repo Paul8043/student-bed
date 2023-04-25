@@ -218,15 +218,15 @@ Because of that, the initial idea has been given up. The 2D-drawings are created
 
 In total 4 SVG-Files are needed. The jamb is assembled of 2 broad and 2 small sides.
 
-![jamb-broad](docs/jamb_broad_w130.svg)
+![jamb-broad](docs/jamb_broad_qcad.svg)
 
-![jamb-small](docs/jamb_small_w130.svg)
+![jamb-small](docs/jamb_small_qcad.svg)
 
 It is always difficult to drill holes in abutting faces. The jig below helps to do this.
 
-![jamb-jig](docs/jamb_jig_w130.svg)
+![jamb-jig](docs/jamb_jig_qcad.svg)
 
 And the ribs need both-sided notches.
 
-![rib-short](docs/rib_short_w130.svg)
+![rib-short](docs/rib_short_qcad.svg)
 

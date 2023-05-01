@@ -6,9 +6,9 @@ The main focus here is how the wooden parts are made and how they are joined tog
 
 The bed has to be demountable and because of this woodscrews would be a poor choice, it is much better to use screws with metrical threads. The screws need a metallic counterpart as a nut. But normal nuts would also not be a good choice, better to use inserts, they will remain all the time in the wood, they cannot get lost.
 
-Now, let us us go back to the wooden parts. We need pre-cut-plans for all oft them. The dimensions are listed in the bill-of-materials (see docs/bom.csv). Some wooden parts deviate from the plastic-version of the prototyp. There the jambs are single box which is shelled out. The wooden-version consists of 2 broad and 2 small sides which are glued together later on. This mentioned, because the pre-cut-plans show parts which cannot be found in the model.
+Now, let us us go back to the wooden parts. We need pre-cut-plans for all oft them. The dimensions are listed in the bill-of-materials (see docs/bom.csv). Some wooden parts deviate from the plastic-version of the prototyp. There the jambs are single box which is shelled out. The wooden-version consists of 2 broad and 2 small sides which are glued together later on. This is mentioned, because the pre-cut-plans show parts which cannot be found in the model.
 
-In our do-it-yourself-stores glued beech wood is offered with thickness of 18mm and 27mm. The format for 18mm is 200cm x 40cm anf for 27mm the format is 260cm x 63.5cm. These plates are taken as raw material. The following pre-cut-plans show how the individual parts are cut-out.
+In our do-it-yourself-stores glued beech wood is offered with thickness of 18mm and 27mm. The format for 18mm is 200cm x 40cm and for 27mm the format is 260cm x 63.5cm. These plates are taken as raw material. The following pre-cut-plans show how the individual parts are cut-out.
 
 [pre-cut-plan-1](pre-cut-plan-1.jpg)
 

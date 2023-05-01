@@ -10,10 +10,11 @@ Now, let us us go back to the wooden parts. We need pre-cut-plans for all oft th
 
 In our do-it-yourself-stores glued beech wood is offered with thickness of 18mm and 27mm. The format for 18mm is 200cm x 40cm anf for 27mm the format is 260cm x 63.5cm. These plates are taken as raw material. The following pre-cut-plans show how the individual parts are cut-out.
 
-[pre-cut-plan-1](docs/pre-cut-plan-1.jpg)
+[pre-cut-plan-1](pre-cut-plan-1.jpg)
 
+[pre-cut-plan-2](pre-cut-plan-2.jpg)
 
+[pre-cut-plan-3](pre-cut-plan-3.jpg)
 
-Now we take care for the wooden parts. The jambs in the model are a single part, simply a box 
+[pre-cut-plan-4](pre-cut-plan-4.jpg)
 
-The inserts (Type SKD330) are for M6-screws, they need a pilot hole in the range from 10.0mm to 10.5mm. For hardwood, and if they are placed on the face, 10.5mm are highly recommended! But anyhow, for such things it is always a good idea to make a test sample first.

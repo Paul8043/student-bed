@@ -1,5 +1,3 @@
-# !!! under construction !!!
-
 # Student-Bed
 
 ![appetizer](docs/bed.png)

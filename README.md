@@ -90,7 +90,7 @@ You should only install the following extensions for the very beginning:
 * Git Graph
 * Python (by Microsoft)
 
-Now we have reached a stage where we can consider to install CadQuery and CQ-editor, see [here](docs/HowTo-CadQuery.txt) to grasp all the details. And as always, goto the web-page and learn how to install. After you have read the Readme.md, you are overwhelmed by such a variety of choices. And what does fit for my machine? The first answer is, it depends: great! You have come in touch with new tools never heard before. Some phobia came up my head, because this looks like additional work. There will be more effort needed to get the new serpents, called "conda" and "mamba", under control. They don't have an own home, they reside together in a common refugium called [miniforge](https://github.com/conda-forge/miniforge).
+Now we have reached a stage where we can consider to install CadQuery and CQ-editor, see [here](docs/HowTo-CadQuery.txt) to grasp all the details. And as always, goto the web-page and learn how to install. After you have read the Readme.md, you are overwhelmed by such a variety of choices. And what does fit for my machine? The first answer is, it depends: great! You have come in touch with new tools never heard before. Some phobia came up in my head, because this looks like additional work. There will be more effort needed to get the new serpents, called "conda" and "mamba", under control. They don't have an own home, they reside together in a common refugium called [miniforge](https://github.com/conda-forge/miniforge).
 
 It will take awhile to find out how the things work in this area. You know already, all this stuff belongs somehow to python-installations. A lot of strange things at first glance. The goal is to find a running combination of Python, CadQuery and CQ-Editor. All 3 depend on other packages, and each of them can have additional dependencies. Python has a package-manager called "pip". Why is "pip" not sufficient? And then you remember why some installations are associated with high risks (scenario 4). Because they might have contradictory requirements. Could "conda" and "mamba" be a solution for this problem? We will see it soon. In this context a new term, named "virtual environment", appears on the scene. Unfortunately there exist several flavors of "virtual environments" and which is the right one for my project? Questions over questions. There is no other way as to learn these tools. Thanks to the internet you get access to this information immediately, but it takes time to learn. So, my first model, created by CadQuery, has to wait.
 
@@ -126,7 +126,7 @@ Uncomment lines #6 to #9 and see what happens. The top-face is colored red, and 
 
 # Mile-Stone #6: Template for Both
 
-Some stubs are created, so that the python-script can be run without any errors on both editors. The template is given [here](docs/template.py)
+Some stubs are created, so that the python-script can be run without any errors on both editors. The template is given [here](docs/template.py).
 
 # Mile-Stone #7: Recommended Workflow
 
@@ -147,7 +147,7 @@ There are many variants possible. The sequence below is easy to use for newbies.
 
 If the repository is created first on GitHub, this has the advantage that the relationship between "remote" and "local" is established from the very beginning.
 
-Some addition hints to "git". The git-database, which holds all your revisions, is stored in a hidden folder named ".git" and it is stored in your project-directory. Never touch this folder and its contents, it would lead to a corrupt database, and all your version can disappear. Having ".git" directly under your project-directory implies that when the project-folder is moved, all revisions go along automatically. There is another dot-file, named ".gitignore". It controls which files and sub-folders are put into ".git". Files and sub-folders excluded here, remain untouched by git, they are untracked. These files and folders can resides anywhere in your project-tree. They remain untouched. They will never appear on GitHub. Keep in mind, "git" has been designed for processing text-files, not for binaries. Binaries can be added, but they consume a lot of space. For each change a copy of the binary is added. Because of that do not store large binary files (BLOBs). The repository will grow quickly and uploads & downloads will take very long.
+Some additional hints to "git". The git-database, which holds all your revisions, is stored in a hidden folder named ".git" and it is stored in your project-directory. Never touch this folder and its contents, it would lead to a corrupt database, and all your version can disappear. Having ".git" directly under your project-directory implies that when the project-folder is moved, all revisions go along automatically. There is another dot-file, named ".gitignore". It controls which files and sub-folders are put into ".git". Files and sub-folders excluded here, remain untouched by git, they are untracked. These files and folders can resides anywhere in your project-tree. They remain untouched. They will never appear on GitHub. Keep in mind, "git" has been designed for processing text-files, not for binaries. Binaries can be added, but they consume a lot of space. For each change a copy of the binary is added. Because of that do not store large binary files (BLOBs). The repository will grow quickly and uploads & downloads will take very long.
 
 Steps 7 & 8 need some more explanation. "edit" and "save" are clear. Revision-handling with git is a 3-step-approach: 
 * add a file, after saving, to the stage-area. A file there is marked with "A".
@@ -175,7 +175,7 @@ The frame is built with 6 jambs and 7 ribs.
 
 [frame](docs/frame.png)
 
-The duckboard covers only one half the bed. The battens are simply loaded on top of the stringers and ledgers.
+The duckboard covers only one half of the bed. The battens are simply loaded on top of the stringers and ledgers.
 
 [stringer](docs/stringer.png)
 [ledger](docs/ledger.png)
@@ -201,7 +201,7 @@ The bed is demountable. Just open the screws on top of the jambs. All parts can 
 
 # Mile-Stone #11: Bill Of Material
 
-It is time to order material. The complete list given as CSV-File, see [bom](docs/bom.csv)
+It is time to order material. The complete list given as CSV-File, see [bom](docs/bom.csv).
 
 # Mile-Stone #12: Generation of SVG-Files
 
@@ -238,4 +238,4 @@ After so much work we can have a look at the real bed!
 
 # Mile-Stone #14: Delivery
 
-The delivery has already taken taken. The transport was easy and the mounting of the bed was simple, too. The setting-up time was 25 minutes, a few minutes more than expected! 
+The delivery has already taken place. The transport was easy and the mounting of the bed was simple, too. The setting-up time was 25 minutes, a few minutes more than expected! 
